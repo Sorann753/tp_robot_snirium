@@ -10,11 +10,17 @@
     <height>792</height>
    </rect>
   </property>
+  <property name="mouseTracking">
+   <bool>false</bool>
+  </property>
+  <property name="tabletTracking">
+   <bool>false</bool>
+  </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="pushButton_droite">
     <property name="geometry">
      <rect>
       <x>1050</x>
@@ -26,8 +32,11 @@
     <property name="text">
      <string>➡️</string>
     </property>
+    <property name="shortcut">
+     <string>D</string>
+    </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_4">
+   <widget class="QPushButton" name="pushButton_avancer">
     <property name="geometry">
      <rect>
       <x>960</x>
@@ -39,8 +48,11 @@
     <property name="text">
      <string>⬆️</string>
     </property>
+    <property name="shortcut">
+     <string>Z</string>
+    </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_5">
+   <widget class="QPushButton" name="pushButton_recule">
     <property name="geometry">
      <rect>
       <x>960</x>
@@ -52,8 +64,14 @@
     <property name="text">
      <string>⬇️</string>
     </property>
+    <property name="shortcut">
+     <string>S</string>
+    </property>
+    <property name="checkable">
+     <bool>false</bool>
+    </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_6">
+   <widget class="QPushButton" name="pushButton_gauche">
     <property name="geometry">
      <rect>
       <x>870</x>
@@ -64,6 +82,9 @@
     </property>
     <property name="text">
      <string>⬅️</string>
+    </property>
+    <property name="shortcut">
+     <string>Q</string>
     </property>
    </widget>
    <widget class="QLabel" name="label">
@@ -92,7 +113,7 @@
      <string>Angle     :</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit">
+   <widget class="QLineEdit" name="lineEdit_position">
     <property name="geometry">
      <rect>
       <x>950</x>
@@ -102,7 +123,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_2">
+   <widget class="QLineEdit" name="lineEdit_angle">
     <property name="geometry">
      <rect>
       <x>950</x>
@@ -112,7 +133,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_2">
+   <widget class="QPushButton" name="pushButton_connexion">
     <property name="geometry">
      <rect>
       <x>290</x>
@@ -125,7 +146,7 @@
      <string>Connexion</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_8">
+   <widget class="QPushButton" name="pushButton_deconnexion">
     <property name="geometry">
      <rect>
       <x>290</x>
@@ -151,7 +172,7 @@
      <string>Distance obstacle :</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_3">
+   <widget class="QLineEdit" name="lineEdit_ip">
     <property name="geometry">
      <rect>
       <x>50</x>
@@ -187,7 +208,7 @@
      <string>Port :</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_4">
+   <widget class="QLineEdit" name="lineEdit_port">
     <property name="geometry">
      <rect>
       <x>50</x>
@@ -197,7 +218,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_5">
+   <widget class="QLineEdit" name="lineEdit_distance">
     <property name="geometry">
      <rect>
       <x>1020</x>
@@ -206,32 +227,6 @@
       <height>25</height>
      </rect>
     </property>
-   </widget>
-   <widget class="QWidget" name="horizontalLayoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>920</x>
-      <y>100</y>
-      <width>291</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QLabel" name="label_3">
-       <property name="text">
-        <string>Taux snirium :</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QProgressBar" name="progressBar">
-       <property name="value">
-        <number>24</number>
-       </property>
-      </widget>
-     </item>
-    </layout>
    </widget>
    <widget class="QWidget" name="horizontalLayoutWidget_2">
     <property name="geometry">
@@ -244,9 +239,12 @@
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
-      <widget class="QPushButton" name="pushButton_7">
+      <widget class="QPushButton" name="pushButton_descendre">
        <property name="text">
         <string>DESCENDRE</string>
+       </property>
+       <property name="shortcut">
+        <string>Down</string>
        </property>
       </widget>
      </item>
@@ -264,13 +262,42 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_3">
+      <widget class="QPushButton" name="pushButton_lever">
        <property name="text">
         <string>LEVER</string>
+       </property>
+       <property name="shortcut">
+        <string>Up</string>
        </property>
       </widget>
      </item>
     </layout>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>880</x>
+      <y>90</y>
+      <width>93</width>
+      <height>29</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Taux snirium :</string>
+    </property>
+   </widget>
+   <widget class="QProgressBar" name="progressBar">
+    <property name="geometry">
+     <rect>
+      <x>1020</x>
+      <y>90</y>
+      <width>191</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="value">
+     <number>24</number>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
