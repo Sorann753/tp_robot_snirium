@@ -322,7 +322,7 @@ public:
 
 
 
-private:
+protected:
 	// Attributs capteurs
 	gyro_sensor capteurAngle;			// sur port 4
 	touch_sensor capteurContact;		// sur port 1

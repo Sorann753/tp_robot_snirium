@@ -6,17 +6,11 @@
  * @version 0.3
  */
 
-#include <iostream>
-#include <cstdlib>
-#include <unistd.h>
-#include <cerrno>
-#include <sys/un.h>
-#include <arpa/inet.h>
-#include "robot.hpp"
+#include "robot_main.hpp"
 
 int main(int argc, char** argv) {
 
-    const int PORT = (argc > 1) ? atoi(argv[1]) : 5000;
+    const int PORT = (argc > 1) ? atoi(argv[1]) : 50000;
 
     // Instanciation de l'objet robot
     Robot monRobot;
@@ -36,7 +30,7 @@ int main(int argc, char** argv) {
     // Création une file d'attente de connexion
     listen(sd_serveur, 5);
 
-    while(1) {
+    while(true) {
         // Dès qu’un nouveau client se connecte à notre serveur,
         // une nouvelle socket est créée pour gérer le client
         int sd_client = accept(sd_serveur, NULL, NULL);

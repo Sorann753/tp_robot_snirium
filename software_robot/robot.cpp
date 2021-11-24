@@ -87,13 +87,13 @@ void Robot::attendre(int delai_en_millisecondes)
 //==============================================================================
 // Méthodes pour gérer le gyroscope
 //==============================================================================
-int Robot::recupererGyroscopeAngle()
+inline int Robot::recupererGyroscopeAngle()
 {
 	return capteurAngle.angle();
 }
 
 
-int Robot::recupererGyroscopeVitesse()
+inline int Robot::recupererGyroscopeVitesse()
 {
 	return capteurAngle.rate();
 }
@@ -109,7 +109,7 @@ void Robot::initialiserGyroscope()
 //==============================================================================
 // Méthodes pour gérer le capteur de contact
 //==============================================================================
-bool Robot::recupererEtatCapteurContact()
+inline bool Robot::recupererEtatCapteurContact()
 {
 	return capteurContact.is_pressed();
 }
@@ -118,32 +118,32 @@ bool Robot::recupererEtatCapteurContact()
 //==============================================================================
 // Méthodes pour gérer le capteur de couleur
 //==============================================================================
-int Robot::recupererLumiereReflechie()
+inline int Robot::recupererLumiereReflechie()
 {
 	return capteurCouleur.reflected_light_intensity();
 }
 
-int Robot::recupererLumiereAmbiante()
+inline int Robot::recupererLumiereAmbiante()
 {
 	return capteurCouleur.ambient_light_intensity();
 }
 
-int Robot::recupererCouleurCode()
+inline int Robot::recupererCouleurCode()
 {
 	return capteurCouleur.color();
 }
 
-int Robot::recupererCouleurRouge()
+inline int Robot::recupererCouleurRouge()
 {
 	return capteurCouleur.red();
 }
 
-int Robot::recupererCouleurVerte()
+inline int Robot::recupererCouleurVerte()
 {
 	return capteurCouleur.green();
 }
 
-int Robot::recupererCouleurBleue()
+inline int Robot::recupererCouleurBleue()
 {
 	return capteurCouleur.blue();
 }
@@ -152,7 +152,7 @@ int Robot::recupererCouleurBleue()
 //==============================================================================
 // Méthodes pour gérer le capteur de distance (ultrason)
 //==============================================================================
-float Robot::recupererDistance()
+inline float Robot::recupererDistance()
 {
 	return capteurDistance.distance_centimeters();
 }
@@ -161,12 +161,12 @@ float Robot::recupererDistance()
 //==============================================================================
 // Méthodes pour gérer la batterie
 //==============================================================================
-float Robot::recupererBatterieTension()
+inline float Robot::recupererBatterieTension()
 {
 	return power_supply::battery.measured_volts();
 }
 
-float Robot::recupererBatterieIntensite()
+inline float Robot::recupererBatterieIntensite()
 {
 	return power_supply::battery.measured_amps();
 }
@@ -197,32 +197,32 @@ void Robot::eteindrePixel(int x, int y)
 //==============================================================================
 // Méthodes pour gérer les boutons
 //==============================================================================
-bool Robot::recupererEtatBoutonHaut()
+inline bool Robot::recupererEtatBoutonHaut()
 {
 	return button::up.pressed();
 }
 
-bool Robot::recupererEtatBoutonBas()
+inline bool Robot::recupererEtatBoutonBas()
 {
 	return button::down.pressed();
 }
 
-bool Robot::recupererEtatBoutonDroite()
+inline bool Robot::recupererEtatBoutonDroite()
 {
 	return button::right.pressed();
 }
 
-bool Robot::recupererEtatBoutonGauche()
+inline bool Robot::recupererEtatBoutonGauche()
 {
 	return button::left.pressed();
 }
 
-bool Robot::recupererEtatBoutonCentral()
+inline bool Robot::recupererEtatBoutonCentral()
 {
 	return button::enter.pressed();
 }
 
-bool Robot::recupererEtatBoutonRetour()
+inline bool Robot::recupererEtatBoutonRetour()
 {
 	return button::back.pressed();
 }
@@ -347,11 +347,11 @@ int Robot::recupererPositionDuMoteur(Emplacement e)
 	{
 		return pMoteurGauche->position();
 	}
-	if (e == CENTRE)
+	else if (e == CENTRE)
 	{
 		return pMoteurCentral->position();
 	}
-	if (e == DROITE)
+	else if (e == DROITE)
 	{
 		return pMoteurDroit->position();
 	}
