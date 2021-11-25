@@ -1,6 +1,6 @@
 /**
  * @file robot_api.hpp
- * @brief header de la classe Robot_api
+ * @brief header de la classe Robot::Api
  * @author arthus DORIATH
  * @date 23/11/2021
  * @version 0.1
@@ -15,11 +15,15 @@
 
 
 
-/* @brief la classe pour faire executer une action par le robot */
-class Robot_api : public Robot{
+namespace robot{
+
+/* @brief la classe pour interagir avec le robot */
+class Api : public Robot{
 
     //Fr
 };
+
+}
 
 
 
