@@ -20,22 +20,22 @@ Robot::Robot()
 {
 	
 	// Instanciations dynamiques des objets "moteurs" selon leurs ports de sortie respectifs
-	pMoteurGauche = new large_motor("ev3-ports:outA");			// "outA"
-	pMoteurCentral = new medium_motor("ev3-ports:outB");	// "outB"
-	pMoteurDroit = new large_motor("ev3-ports:outC");			// "outC"
+	pMoteurGauche = new ev3dev::large_motor("ev3-ports:outA");			// "outA"
+	pMoteurCentral = new ev3dev::medium_motor("ev3-ports:outB");	// "outB"
+	pMoteurDroit = new ev3dev::large_motor("ev3-ports:outC");			// "outC"
 
 	// Vérifications de la présence des moteurs
 	if (pMoteurGauche->connected() == false)
 	{
-		cout << "ERREUR => Le moteur gauche ne semble pas présent (port A)" << endl;
+		std::cout << "ERREUR => Le moteur gauche ne semble pas présent (port A)" << std::endl;
 	}
 	if (pMoteurCentral->connected() == false)
 	{
-		cout << "ERREUR => Le moteur central ne semble pas présent (port B)" << endl;
+		std::cout << "ERREUR => Le moteur central ne semble pas présent (port B)" << std::endl;
 	}
 	if (pMoteurDroit->connected() == false)
 	{
-		cout << "ERREUR => Le moteur droit ne semble pas présent (port C)" << endl;
+		std::cout << "ERREUR => Le moteur droit ne semble pas présent (port C)" << std::endl;
 	}
 
 	// Initialisations des moteurs
@@ -44,7 +44,7 @@ Robot::Robot()
 	// Vérification de la présence des capteurs
 	if (capteurAngle.connected() == false)
 	{
-		cout << "ERREUR => Le capteur d'angle ne semble pas présent" << endl;
+		std::cout << "ERREUR => Le capteur d'angle ne semble pas présent" << std::endl;
 	}
 	else
 	{
@@ -53,15 +53,15 @@ Robot::Robot()
 
 	if (capteurContact.connected() == false)
 	{
-		cout << "ERREUR => Le capteur de contact ne semble pas présent" << endl;
+		std::cout << "ERREUR => Le capteur de contact ne semble pas présent" << std::endl;
 	}
 	if (capteurCouleur.connected() == false)
 	{
-		cout << "ERREUR => Le capteur de couleur ne semble pas présent" << endl;
+		std::cout << "ERREUR => Le capteur de couleur ne semble pas présent" << std::endl;
 	}
 	if (capteurDistance.connected() == false)
 	{
-		cout << "ERREUR => Le capteur de distance ne semble pas présent" << endl;
+		std::cout << "ERREUR => Le capteur de distance ne semble pas présent" << std::endl;
 	}
 }
 
@@ -80,7 +80,7 @@ Robot::~Robot()
 //==============================================================================
 void Robot::attendre(int delai_en_millisecondes)
 {
-	this_thread::sleep_for(chrono::milliseconds(delai_en_millisecondes));
+	std::this_thread::sleep_for(std::chrono::milliseconds(delai_en_millisecondes));
 }
 
 
@@ -163,12 +163,12 @@ inline float Robot::recupererDistance()
 //==============================================================================
 inline float Robot::recupererBatterieTension()
 {
-	return power_supply::battery.measured_volts();
+	return ev3dev::power_supply::battery.measured_volts();
 }
 
 inline float Robot::recupererBatterieIntensite()
 {
-	return power_supply::battery.measured_amps();
+	return ev3dev::power_supply::battery.measured_amps();
 }
 
 
@@ -199,32 +199,32 @@ void Robot::eteindrePixel(int x, int y)
 //==============================================================================
 inline bool Robot::recupererEtatBoutonHaut()
 {
-	return button::up.pressed();
+	return ev3dev::button::up.pressed();
 }
 
 inline bool Robot::recupererEtatBoutonBas()
 {
-	return button::down.pressed();
+	return ev3dev::button::down.pressed();
 }
 
 inline bool Robot::recupererEtatBoutonDroite()
 {
-	return button::right.pressed();
+	return ev3dev::button::right.pressed();
 }
 
 inline bool Robot::recupererEtatBoutonGauche()
 {
-	return button::left.pressed();
+	return ev3dev::button::left.pressed();
 }
 
 inline bool Robot::recupererEtatBoutonCentral()
 {
-	return button::enter.pressed();
+	return ev3dev::button::enter.pressed();
 }
 
 inline bool Robot::recupererEtatBoutonRetour()
 {
-	return button::back.pressed();
+	return ev3dev::button::back.pressed();
 }
 
 
@@ -235,19 +235,19 @@ void Robot::allumerLed(Emplacement e, Couleur c)
 {
 	if ( (e == GAUCHE) && (c == ROUGE) )
 	{
-		led::red_left.on();
+		ev3dev::led::red_left.on();
 	}
 	if ( (e == GAUCHE) && (c == VERTE) )
 	{
-		led::green_left.on();
+		ev3dev::led::green_left.on();
 	}
 	if ( (e == DROITE) && (c == ROUGE) )
 	{
-		led::red_right.on();
+		ev3dev::led::red_right.on();
 	}
 	if ( (e == DROITE) && (c == VERTE) )
 	{
-		led::green_right.on();
+		ev3dev::led::green_right.on();
 	}
 }
 
@@ -255,19 +255,19 @@ void Robot::eteindreLed(Emplacement e, Couleur c)
 {
 	if ( (e == GAUCHE) && (c == ROUGE) )
 	{
-		led::red_left.off();
+		ev3dev::led::red_left.off();
 	}
 	if ( (e == GAUCHE) && (c == VERTE) )
 	{
-		led::green_left.off();
+		ev3dev::led::green_left.off();
 	}
 	if ( (e == DROITE) && (c == ROUGE) )
 	{
-		led::red_right.off();
+		ev3dev::led::red_right.off();
 	}
 	if ( (e == DROITE) && (c == VERTE) )
 	{
-		led::green_right.off();
+		ev3dev::led::green_right.off();
 	}
 }
 
@@ -277,17 +277,17 @@ void Robot::eteindreLed(Emplacement e, Couleur c)
 //==============================================================================
 void Robot::emettreSon(float frequence, float duree, bool synchrone)
 {
-	sound::tone(frequence, duree, synchrone);
+	ev3dev::sound::tone(frequence, duree, synchrone);
 }
 
-void Robot::parler(string phrase, bool synchrone)
+void Robot::parler(std::string phrase, bool synchrone)
 {
-	sound::speak(phrase, synchrone);
+	ev3dev::sound::speak(phrase, synchrone);
 }
 
-void Robot::lireFichierSon(string nomFichier, bool synchrone)
+void Robot::lireFichierSon(std::string nomFichier, bool synchrone)
 {
-	sound::play(nomFichier, synchrone);
+	ev3dev::sound::play(nomFichier, synchrone);
 }
 
 

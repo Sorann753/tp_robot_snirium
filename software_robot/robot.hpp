@@ -8,8 +8,8 @@
  * Cette classe Robot formera une sur-couche à l'ensemble des classes ev3dev
  * et facilitera ainsi le développement des programmes pour  les "challenges"
  */
-#ifndef ROBOT_H
-#define ROBOT_H
+#ifndef ROBOT_HPP
+#define ROBOT_HPP
 
 // Librairies utilisées
 #include <iostream>
@@ -17,9 +17,6 @@
 #include <thread>
 #include "ev3dev.h"
 
-// Espaces de noms utilisés
-using namespace std;
-using namespace ev3dev;
 
 
 // Définition de la classe
@@ -265,7 +262,7 @@ public:
 	 * @param synchrone : true=robot bloqué pendant son, false=robot peut faire autre chose pendant son
 	 * @return rien
 	 */
-	void parler(string phrase, bool synchrone);
+	void parler(std::string phrase, bool synchrone);
 
 	/**
 	 * Méthode pour émettre un son
@@ -276,7 +273,7 @@ public:
 	 * Pour téléverser un fichier MP3 dans le robot on pourra utiliser la commande scp :
 	 * $ scp meuh.mp3 robot@192.168.0.167:/home/robot/snir1/
 	 */
-	void lireFichierSon(string nomFichier, bool synchrone);
+	void lireFichierSon(std::string nomFichier, bool synchrone);
 
 
 
@@ -324,19 +321,19 @@ public:
 
 protected:
 	// Attributs capteurs
-	gyro_sensor capteurAngle;			// sur port 4
-	touch_sensor capteurContact;		// sur port 1
-	color_sensor capteurCouleur;		// sur port 3
-	ultrasonic_sensor capteurDistance;	// sur port 2
+	ev3dev::gyro_sensor capteurAngle;			// sur port 4
+	ev3dev::touch_sensor capteurContact;		// sur port 1
+	ev3dev::color_sensor capteurCouleur;		// sur port 3
+	ev3dev::ultrasonic_sensor capteurDistance;	// sur port 2
 
 	// Attributs écran
-	lcd ecran;
+	ev3dev::lcd ecran;
 
 	// Attributs moteurs (voir constructeur)
-	large_motor *pMoteurGauche;		// sur port A
-	large_motor *pMoteurDroit;		// sur port C
-	medium_motor *pMoteurCentral;	// sur port B
+	ev3dev::large_motor *pMoteurGauche;		// sur port A
+	ev3dev::large_motor *pMoteurDroit;		// sur port C
+	ev3dev::medium_motor *pMoteurCentral;	// sur port B
 };
 
 
-#endif
+#endif // ROBOT_HPP
