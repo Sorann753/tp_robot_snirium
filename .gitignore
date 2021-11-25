@@ -2,7 +2,6 @@
 build-ihm_robot-Desktop-Debug/
 
 #ignore les fichier de projet QT
-ihm_robot/*.pro
 ihm_robot/*.pro.user
 
 #ignore le dossier du code source original du robot lego
