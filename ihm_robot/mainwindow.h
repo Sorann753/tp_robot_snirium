@@ -3,8 +3,14 @@
 
 #include <QMainWindow>
 #include <QTimer>
+#include <QImage>
 #include <QtNetwork>
 #include <QShortcut>
+#include <QDebug>
+#include <QSqlQuery>
+#include <QSqlError>
+#include <QSqlRecord>
+#include <QSqlDatabase>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -47,9 +53,13 @@ private slots:
 
     void on_pushButton_deconnexion_clicked();
 
+    void gerer_donnees();
+
 private:
     Ui::MainWindow *ui; //un pointeur sur l'interface graphique
     QTimer *pTimer;
+    QImage*pRobot;
+    //QImage*pFont;
     QTcpSocket *tcpSocket;
 
 

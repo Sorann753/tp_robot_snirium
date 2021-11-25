@@ -23,6 +23,17 @@ MainWindow::MainWindow(QWidget *parent)
 
     pTimer = new QTimer();
     connect(pTimer, SIGNAL(timeout()), this, SLOT(faire_qqchose()));
+
+     pRobot = new QImage();
+     pRobot ->load ("/home/etudiant/Téléchargements/robot_lego.png");
+     ui->label_robot->setPixmap(QPixmap::fromImage(*pRobot));
+
+     //pFont = new QImage();
+     //pFont ->load ("/home/etudiant/Documents/image-blanche-800x548px.jpg");
+     //ui->label_font->setPixmap(QPixmap::fromImage(*pFont));
+
+    //bdd = QSqlDatabase::addDatabase("QSQLITE");
+
 }
 
 /**
@@ -32,20 +43,37 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
+
 }
+
+
+
+
     ///////////////////////////////////
     //bouton connexion & deconnexion //
     ///////////////////////////////////
 
+
+
 void MainWindow::on_pushButton_connexion_clicked()
 {
-    //récupération des parametres de connexions
+
+     // Récupération des paramètres
      QString adresse_ip = ui->lineEdit_ip->text();
+     unsigned short port_tcp = ui->lineEdit_port->text().toInt();
+
+     // Connexion au serveur
+     tcpSocket->connectToHost(adresse_ip, port_tcp);
+
+     // Lancement du timer avec un tick toutes les 1000 ms
+     pTimer->start(1000);
+
 }
 
 void MainWindow::on_pushButton_deconnexion_clicked()
 {
-
+    // Déconnexion du serveur
+    tcpSocket->close();
 }
 
 
@@ -59,27 +87,29 @@ void MainWindow::on_pushButton_deconnexion_clicked()
 
 void MainWindow::on_pushButton_avancer_pressed()
 {
-    //tcpSocket->write(avancer);
-    ui->lineEdit_ip->setText(avancer);
+    tcpSocket->write(avancer);
 
 }
 
 
 void MainWindow::on_pushButton_gauche_pressed()
 {
-    ui->lineEdit_ip->setText(gauche);
+    tcpSocket->write(gauche);
+
 }
 
 
 void MainWindow::on_pushButton_droite_pressed()
 {
-    ui->lineEdit_ip->setText(droite);
+    tcpSocket->write(droite);
+
 }
 
 
 void MainWindow::on_pushButton_recule_pressed()
 {
-    ui->lineEdit_ip->setText(reculer);
+    tcpSocket->write(reculer);
+
 }
 
 
@@ -91,10 +121,76 @@ void MainWindow::on_pushButton_recule_pressed()
 
 void MainWindow::on_pushButton_descendre_pressed()
 {
-    ui->lineEdit_ip->setText(baisser);
+    tcpSocket->write(baisser);
+
 }
 
 void MainWindow::on_pushButton_lever_pressed()
 {
-    ui->lineEdit_ip->setText(lever);
+    tcpSocket->write(lever);
+
 }
+
+
+
+
+    /////////////////////////////////
+    //connexion à la base de donnée//
+    /////////////////////////////////
+
+
+
+
+
+
+
+    /////////////////////////////////
+    //    reception des trames     //
+    /////////////////////////////////
+
+void MainWindow::gerer_donnees()
+{
+    // Réception des données
+    QByteArray reponse = tcpSocket->readAll();
+    QString trame(reponse);
+
+    //décodage
+    QStringList trameDecoupee = trame.split(',');
+    if(trameDecoupee.size() < 3){
+
+        return;
+    }
+
+
+
+    //progressebar batterie
+
+    //float tauxbatterie = **************;
+    //ui->progressBar_batterie->setValue(tauxbatterie);
+
+
+
+    //progressBar_snirium
+
+    //float tauxsnirium = **************;
+    //ui->progressBar_snirium->setValue(tauxsnirium);
+
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+

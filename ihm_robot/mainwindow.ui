@@ -23,8 +23,8 @@
    <widget class="QPushButton" name="pushButton_droite">
     <property name="geometry">
      <rect>
-      <x>1050</x>
-      <y>290</y>
+      <x>1070</x>
+      <y>300</y>
       <width>89</width>
       <height>81</height>
      </rect>
@@ -39,8 +39,8 @@
    <widget class="QPushButton" name="pushButton_avancer">
     <property name="geometry">
      <rect>
-      <x>960</x>
-      <y>290</y>
+      <x>980</x>
+      <y>220</y>
       <width>89</width>
       <height>81</height>
      </rect>
@@ -55,8 +55,8 @@
    <widget class="QPushButton" name="pushButton_recule">
     <property name="geometry">
      <rect>
-      <x>960</x>
-      <y>370</y>
+      <x>980</x>
+      <y>380</y>
       <width>89</width>
       <height>81</height>
      </rect>
@@ -74,8 +74,8 @@
    <widget class="QPushButton" name="pushButton_gauche">
     <property name="geometry">
      <rect>
-      <x>870</x>
-      <y>290</y>
+      <x>890</x>
+      <y>300</y>
       <width>89</width>
       <height>81</height>
      </rect>
@@ -181,13 +181,16 @@
       <height>25</height>
      </rect>
     </property>
+    <property name="text">
+     <string>192.168.1.159</string>
+    </property>
    </widget>
    <widget class="QLabel" name="label_5">
     <property name="geometry">
      <rect>
       <x>20</x>
       <y>680</y>
-      <width>141</width>
+      <width>31</width>
       <height>17</height>
      </rect>
     </property>
@@ -200,7 +203,7 @@
      <rect>
       <x>0</x>
       <y>710</y>
-      <width>141</width>
+      <width>41</width>
       <height>17</height>
      </rect>
     </property>
@@ -217,6 +220,9 @@
       <height>25</height>
      </rect>
     </property>
+    <property name="text">
+     <string>50000</string>
+    </property>
    </widget>
    <widget class="QLineEdit" name="lineEdit_distance">
     <property name="geometry">
@@ -231,7 +237,7 @@
    <widget class="QWidget" name="horizontalLayoutWidget_2">
     <property name="geometry">
      <rect>
-      <x>870</x>
+      <x>890</x>
       <y>460</y>
       <width>261</width>
       <height>51</height>
@@ -286,7 +292,7 @@
      <string>Taux snirium :</string>
     </property>
    </widget>
-   <widget class="QProgressBar" name="progressBar">
+   <widget class="QProgressBar" name="progressBar_snirium">
     <property name="geometry">
      <rect>
       <x>1020</x>
@@ -297,6 +303,61 @@
     </property>
     <property name="value">
      <number>24</number>
+    </property>
+   </widget>
+   <widget class="QFrame" name="frame">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>30</y>
+      <width>821</width>
+      <height>631</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QLabel" name="label_robot">
+     <property name="geometry">
+      <rect>
+       <x>310</x>
+       <y>220</y>
+       <width>181</width>
+       <height>181</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QProgressBar" name="progressBar_batterie">
+    <property name="geometry">
+     <rect>
+      <x>1020</x>
+      <y>20</y>
+      <width>191</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="value">
+     <number>24</number>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_7">
+    <property name="geometry">
+     <rect>
+      <x>880</x>
+      <y>20</y>
+      <width>93</width>
+      <height>29</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Batterie         :</string>
     </property>
    </widget>
   </widget>
