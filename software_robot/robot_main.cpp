@@ -8,33 +8,45 @@
 
 
 
-#include <iostream>
 #include <cstdlib>
+#include <iostream>
 
-//#include "robot_server.hpp"
-//#include "robot_api.hpp"
-#include <unistd.h>
 #include <cerrno>
+#include <unistd.h>
 #include <sys/un.h>
 #include <arpa/inet.h>
+
 #include "robot.hpp"
+//#include "robot_api.hpp"
+//#include "robot_server.hpp"
 
 
 
-void 
+//batterie 6.5 => 0%
+//batterie ~8.23 => 100%
+// (X - 6.5) * 100 / (8.23 - 6.5)
 
 
 
+/**
+ * @brief fonction d'entrée du programme
+ * @param argc le nombre d'argument passé en lignes de commande
+ * @param argv les arguments passés en lignes de commande
+ * @return un code d'erreur
+ */
 int main(int argc, char** argv) {
 
-    //si un port est passé en argument on l'utilise, si non par defaut on prend le port 50000
-    const int PORT = (argc > 1) ? atoi(argv[1]) : 50'000;
+    //par defaut on prend le port 50'000
+    unsigned int PORT = 49'999;
 
     // Instanciation d'un objet ////Robot::api
-    Robot mon_robot;
+    robot::Api robot_lego;
+
+    // Initialisation des moteurs et des tachymètres à 0
+    mon_robot.initialiserMoteurs();
     
     // Instanciation d'un objet Robot::Server
-    //robot::Server Server();
+    //robot::Server Server(PORT, mon_robot);
 
     int _sd_serveur;
     struct sockaddr_in _cfg_serveur;
@@ -47,16 +59,12 @@ int main(int argc, char** argv) {
     // Configuration de la socket, notamment le port d'écoute
     _cfg_serveur.sin_family = AF_INET;
     _cfg_serveur.sin_addr.s_addr = htonl(INADDR_ANY);
-    _cfg_serveur.sin_port = htons(PORT);
 
-    // Attachement de la socket au port défini
-    err = bind(_sd_serveur, (struct sockaddr *)&_cfg_serveur, sizeof(_cfg_serveur));
-
-    if(err < 0){
-        std::cerr << "ERROR : can't open port " << PORT << std::endl;
-        close(_sd_serveur);
-        return err;
-    }
+    // Attachement de la socket au premier port libre en partant de 50'000
+    do{
+        _cfg_serveur.sin_port = htons(++PORT);
+        err = bind(_sd_serveur, (struct sockaddr *)&_cfg_serveur, sizeof(_cfg_serveur));
+    } while(err < 0);
 
     // Création d'une file d'attente de connexion
     listen(_sd_serveur, 5);
@@ -80,14 +88,13 @@ int main(int argc, char** argv) {
         std::string reponse(buffer);
         std::cout << reponse << std::endl;
 
-        mon_robot.emettreSon(1000, 1000, true);
+        //mon_robot.emettreSon(1000, 1000, true);
 
-        mon_robot.parler(reponse, true);
+        //mon_robot.parler(reponse, true);
 
         // Envoi de la réponse au client
-        std::string requete = "Hello world!";
+        std::string requete = reponse;
         send(sd_client, requete.c_str(), requete.size(), 0);
-
     }
 
     if(sd_client != -1){
@@ -98,9 +105,6 @@ int main(int argc, char** argv) {
     }
 
     //Robot.parler(argv[1], true);
-
-    // Initialisation des moteurs et des tachymètres à 0
-    //Robot.initialiserMoteurs();
 
     close(_sd_serveur);
 
