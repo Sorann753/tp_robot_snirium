@@ -2,8 +2,8 @@
  * @file robot_api.hpp
  * @brief header de la classe Robot::Api
  * @author arthus DORIATH
- * @date 25/11/2021
- * @version 0.2
+ * @date 29/11/2021
+ * @version 0.4
  */
 
 
@@ -17,48 +17,52 @@
 
 namespace robot{
 
-/* @brief la classe pour interagir avec le robot */
-class Api : public Robot{
+    /* @brief enum des différentes commandes possibles */
+    enum Ordres {
 
-public:
+        //mouvements
+        FORWARD = 'A',
+        BACKWARD = 'R',
+        LEFT = 'G',
+        RIGHT = 'D',
+        STOP = 's',
 
-    /**
-     * @brief fonction qui execute l'ordre recu par le server
-     * @param ordre l'ordre qui a été envoyé par le server
-     * @return rien
-     */
-    void executeOrder(std::string ordre){
+        //bras robot
+        UP = 'H',
+        DOWN = 'B',
 
-        if(ordre == "A"){ //si on demande au robot d'avancé
+        //connection
+        CONNECT_STOP = 'S',
+        CONNECT_CLOSE = 'C'
+    };
 
-            changerPuissanceMoteurs(100, 0, 100);
-            attendre(500);
-            changerPuissanceMoteurs(0, 0, 0);
-        }
 
-        else if(ordre == "G"){ //si on demande au robot de tourné a gauche
 
-            changerPuissanceMoteurs(-50, 0, 50);
-            attendre(100);
-            changerPuissanceMoteurs(0, 0, 0);
-        }
+    /* @brief la classe pour interagir avec le robot */
+    class Api : protected Robot{
 
-        else if(ordre == "D"){ //si on demande au robot de tourné a droite
+    public:
 
-            changerPuissanceMoteurs(50, 0, -50);
-            attendre(100);
-            changerPuissanceMoteurs(0, 0, 0);
-        }
+        /**
+         * @brief le constructeur de l'API du robot
+         * @param rien
+         */
+        Api();
 
-        else if(ordre == "R"){ //si on demande au robot de reculé
+        /**
+         * @brief le destructeur de l'API du robot
+         * @param rien
+         */
+        ~Api();
 
-            emettreSon(1000, 400, false);
-            changerPuissanceMoteurs(-100, 0, -100);
-            attendre(500);
-            changerPuissanceMoteurs(0, 0, 0);
-        }
-    }
-};
+        /**
+         * @brief fonction qui execute l'ordre recu par le server
+         * @param ordre l'ordre qui a été envoyé par le server
+         * @return rien
+         * @note should be run in async
+         */
+        void executeOrder(std::string ordre);
+    };
 
 } //end namespace robot
 
