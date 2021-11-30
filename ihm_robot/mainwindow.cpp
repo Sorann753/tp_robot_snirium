@@ -88,13 +88,14 @@ void MainWindow::on_pushButton_deconnexion_clicked()
 void MainWindow::on_pushButton_avancer_pressed()
 {
     tcpSocket->write(avancer);
-
+    placer_robot();
 }
 
 
 void MainWindow::on_pushButton_gauche_pressed()
 {
     tcpSocket->write(gauche);
+    ui->label_robot->move(ui->label_robot->x() -5, ui->label_robot->y());
 
 }
 
@@ -103,12 +104,21 @@ void MainWindow::on_pushButton_droite_pressed()
 {
     tcpSocket->write(droite);
 
+    QPainter painter;
+    painter.begin(pRobot);
+    painter.translate(QPoint(pRobot->width()/2, pRobot->height()/2));
+    painter.rotate(15.0);
+    painter.translate(QPoint(-pRobot->width()/2, -pRobot->height()/2));
+    painter.drawImage(0, 0, *pRobot);
+
+    ui->label_robot->setPixmap(QPixmap::fromImage(*pRobot));
 }
 
 
 void MainWindow::on_pushButton_recule_pressed()
 {
     tcpSocket->write(reculer);
+    ui->label_robot->move(ui->label_robot->x(), ui->label_robot->y() + 5);
 
 }
 
@@ -179,14 +189,34 @@ void MainWindow::gerer_donnees()
 
 
 
+    /////////////////////////////////
+    //       dessin du robot       //
+    /////////////////////////////////
+
+
+
+}
+
+void MainWindow::placer_robot()
+{
+
+    ui->label_robot->move(ui->label_robot->x(), ui->label_robot->y() - 5);
+    ui->Edit_position->setText(QString::number(ui->label_robot->x()));
+
 
 
 }
 
 
+void MainWindow::damage(int x, int y)
+{
 
+    QRectF rectangle(900, 20.0, 80.0, 60.0);
 
+    QPainter painter(this);
+    painter.drawEllipse(rectangle);
 
+}
 
 
 

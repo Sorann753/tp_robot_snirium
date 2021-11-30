@@ -11,6 +11,8 @@
 #include <QSqlError>
 #include <QSqlRecord>
 #include <QSqlDatabase>
+#include <QPainter>
+#include <QGraphicsScene>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -55,10 +57,14 @@ private slots:
 
     void gerer_donnees();
 
+    void placer_robot();
+
+    void damage(int x, int y);
+
 private:
     Ui::MainWindow *ui; //un pointeur sur l'interface graphique
     QTimer *pTimer;
-    QImage*pRobot;
+    QImage * pRobot;
     //QImage*pFont;
     QTcpSocket *tcpSocket;
 

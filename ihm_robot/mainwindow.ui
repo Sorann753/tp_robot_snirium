@@ -113,7 +113,7 @@
      <string>Angle     :</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_position">
+   <widget class="QLineEdit" name="Edit_position">
     <property name="geometry">
      <rect>
       <x>950</x>
@@ -182,7 +182,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>192.168.1.159</string>
+     <string>192.168.1.156</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_5">
@@ -323,7 +323,7 @@
     <widget class="QLabel" name="label_robot">
      <property name="geometry">
       <rect>
-       <x>310</x>
+       <x>300</x>
        <y>220</y>
        <width>181</width>
        <height>181</height>
