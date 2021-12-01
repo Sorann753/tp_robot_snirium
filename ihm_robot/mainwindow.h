@@ -67,6 +67,7 @@ private:
     QImage * pRobot;
     //QImage*pFont;
     QTcpSocket *tcpSocket;
+    int angle = 0; //l'angle en degree
 
 
 

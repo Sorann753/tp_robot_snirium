@@ -25,7 +25,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(pTimer, SIGNAL(timeout()), this, SLOT(faire_qqchose()));
 
      pRobot = new QImage();
-     pRobot ->load ("/home/etudiant/Téléchargements/robot_lego.png");
+     pRobot ->load ("/home/etudiant/Téléchargements/robot.png");
      ui->label_robot->setPixmap(QPixmap::fromImage(*pRobot));
 
      //pFont = new QImage();
@@ -95,8 +95,9 @@ void MainWindow::on_pushButton_avancer_pressed()
 void MainWindow::on_pushButton_gauche_pressed()
 {
     tcpSocket->write(gauche);
-    ui->label_robot->move(ui->label_robot->x() -5, ui->label_robot->y());
 
+    angle = (angle - 15) % 360;
+    ui->label_robot->setPixmap(QPixmap::fromImage(pRobot->transformed(QTransform().rotate(angle))));
 }
 
 
@@ -104,25 +105,8 @@ void MainWindow::on_pushButton_droite_pressed()
 {
     tcpSocket->write(droite);
 
-    QPainter painter;
-    painter.begin(pRobot);
-    painter.translate(QPoint(pRobot->width()/2, pRobot->height()/2));
-    painter.rotate(15.0);
-    painter.translate(QPoint(-pRobot->width()/2, -pRobot->height()/2));
-    painter.drawImage(0, 0, *pRobot);
-
-    ui->label_robot->setPixmap(QPixmap::fromImage(*pRobot));
-
-    /* test
-
-        QImage imageRobot("/home/etudiant/Téléchargements/robot_lego.png");
-        double angle = 15; //l'angle en degree
-        ui->label_robot->setPixmap(QPixmap::fromImage(imageRobot.transformed(QTransform().rotate(angle))));
-        //si sa marche pas, tester
-        ui->label_robot->setPixmap(QPixmap::fromImage(imageRobot.transformed(QMatrix().rotate(angle))));
-
-        angle = (angle + 15) % 360;
-    */
+    angle = (angle + 15) % 360;
+    ui->label_robot->setPixmap(QPixmap::fromImage(pRobot->transformed(QTransform().rotate(angle))));
 }
 
 
