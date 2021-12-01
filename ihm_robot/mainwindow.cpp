@@ -112,6 +112,17 @@ void MainWindow::on_pushButton_droite_pressed()
     painter.drawImage(0, 0, *pRobot);
 
     ui->label_robot->setPixmap(QPixmap::fromImage(*pRobot));
+
+    /* test
+
+        QImage imageRobot("/home/etudiant/Téléchargements/robot_lego.png");
+        double angle = 15; //l'angle en degree
+        ui->label_robot->setPixmap(QPixmap::fromImage(imageRobot.transformed(QTransform().rotate(angle))));
+        //si sa marche pas, tester
+        ui->label_robot->setPixmap(QPixmap::fromImage(imageRobot.transformed(QMatrix().rotate(angle))));
+
+        angle = (angle + 15) % 360;
+    */
 }
 
 
