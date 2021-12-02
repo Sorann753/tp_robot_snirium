@@ -13,6 +13,7 @@
 #include <QSqlDatabase>
 #include <QPainter>
 #include <QGraphicsScene>
+#include <QGraphicsPixmapItem>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -59,15 +60,17 @@ private slots:
 
     void placer_robot();
 
-    void damage(int x, int y);
+    void damage(float distance);
 
 private:
     Ui::MainWindow *ui; //un pointeur sur l'interface graphique
     QTimer *pTimer;
     QImage * pRobot;
+    QImage* pMap;
     //QImage*pFont;
     QTcpSocket *tcpSocket;
     int angle = 0; //l'angle en degree
+
 
 
 

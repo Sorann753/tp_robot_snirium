@@ -163,7 +163,7 @@
     <property name="geometry">
      <rect>
       <x>850</x>
-      <y>150</y>
+      <y>140</y>
       <width>141</width>
       <height>17</height>
      </rect>
@@ -305,35 +305,6 @@
      <number>24</number>
     </property>
    </widget>
-   <widget class="QFrame" name="frame">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>30</y>
-      <width>821</width>
-      <height>631</height>
-     </rect>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Raised</enum>
-    </property>
-    <widget class="QLabel" name="label_robot">
-     <property name="geometry">
-      <rect>
-       <x>300</x>
-       <y>290</y>
-       <width>111</width>
-       <height>111</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>TextLabel</string>
-     </property>
-    </widget>
-   </widget>
    <widget class="QProgressBar" name="progressBar_batterie">
     <property name="geometry">
      <rect>
@@ -360,6 +331,55 @@
      <string>Batterie         :</string>
     </property>
    </widget>
+   <widget class="QLabel" name="label_robot">
+    <property name="geometry">
+     <rect>
+      <x>320</x>
+      <y>270</y>
+      <width>111</width>
+      <height>111</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_map">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>10</y>
+      <width>801</width>
+      <height>631</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <zorder>pushButton_droite</zorder>
+   <zorder>pushButton_avancer</zorder>
+   <zorder>pushButton_recule</zorder>
+   <zorder>pushButton_gauche</zorder>
+   <zorder>label</zorder>
+   <zorder>label_2</zorder>
+   <zorder>Edit_position</zorder>
+   <zorder>lineEdit_angle</zorder>
+   <zorder>pushButton_connexion</zorder>
+   <zorder>pushButton_deconnexion</zorder>
+   <zorder>label_4</zorder>
+   <zorder>lineEdit_ip</zorder>
+   <zorder>label_5</zorder>
+   <zorder>label_6</zorder>
+   <zorder>lineEdit_port</zorder>
+   <zorder>lineEdit_distance</zorder>
+   <zorder>horizontalLayoutWidget_2</zorder>
+   <zorder>label_3</zorder>
+   <zorder>progressBar_snirium</zorder>
+   <zorder>progressBar_batterie</zorder>
+   <zorder>label_7</zorder>
+   <zorder>label_map</zorder>
+   <zorder>label_robot</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

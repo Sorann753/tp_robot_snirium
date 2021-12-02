@@ -25,8 +25,12 @@ MainWindow::MainWindow(QWidget *parent)
     connect(pTimer, SIGNAL(timeout()), this, SLOT(faire_qqchose()));
 
      pRobot = new QImage();
-     pRobot ->load ("/home/etudiant/Téléchargements/robot.png");
+     pRobot ->load ("/home/etudiant/Documents/GitHub/tp_robot_snirium/ihm_robot/robot.png");
      ui->label_robot->setPixmap(QPixmap::fromImage(*pRobot));
+
+     pMap = new QImage();
+     pMap ->load ("/home/etudiant/Documents/GitHub/tp_robot_snirium/ihm_robot/map.png");
+     ui->label_map->setPixmap(QPixmap::fromImage(*pMap));
 
      //pFont = new QImage();
      //pFont ->load ("/home/etudiant/Documents/image-blanche-800x548px.jpg");
@@ -89,6 +93,7 @@ void MainWindow::on_pushButton_avancer_pressed()
 {
     tcpSocket->write(avancer);
     placer_robot();
+    damage(100.0);
 }
 
 
@@ -197,20 +202,36 @@ void MainWindow::placer_robot()
 
     ui->label_robot->move(ui->label_robot->x(), ui->label_robot->y() - 5);
     ui->Edit_position->setText(QString::number(ui->label_robot->x()));
-
-
-
 }
 
 
-void MainWindow::damage(int x, int y)
+
+void MainWindow::damage(float distance)
 {
 
-    QRectF rectangle(900, 20.0, 80.0, 60.0);
+    //QRectF rectangle(x, y, 80.0, 60.0);
 
-    QPainter painter(this);
-    painter.drawEllipse(rectangle);
+    //QPainter painter(pMap);
 
+    //QPen stilot(Qt::black);
+    //painter.setPen(stilot);
+    //painter.drawEllipse(rectangle);
+
+    //ui->label_map->setPixmap(QPixmap::fromImage(*pMap));
+
+    int x_robot = ui->label_robot->x();
+    int y_robot = ui->label_robot->y();
+    float angle_robot = angle - 90;
+
+
+    QLineF line(x_robot, y_robot, x_robot + (distance * cos(angle_robot*3.1415/180.0)), y_robot + (distance * sin(angle_robot*3.1415/180.0)) );
+    QPainter painter(pMap);
+    QPen stilot(Qt::white);
+    stilot.setWidth(5);;
+    painter.setPen(stilot);
+    painter.drawLine(line);
+
+    ui->label_map->setPixmap(QPixmap::fromImage(*pMap));
 }
 
 
