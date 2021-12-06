@@ -2,8 +2,8 @@
  * @file robot_api.cpp
  * @brief code de la classe robot::Api
  * @author arthus DORIATH
- * @date 29/11/2021
- * @version 0.1
+ * @date 03/12/2021
+ * @version 0.2
  */
 
 

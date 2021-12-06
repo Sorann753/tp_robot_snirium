@@ -25,11 +25,11 @@ MainWindow::MainWindow(QWidget *parent)
     connect(pTimer, SIGNAL(timeout()), this, SLOT(faire_qqchose()));
 
      pRobot = new QImage();
-     pRobot ->load ("/home/etudiant/Documents/GitHub/tp_robot_snirium/ihm_robot/robot.png");
+     pRobot ->load ("/home/etudiant/Documents/GitHub/tp_robot_snirium/ihm_robot/images/robot.png");
      ui->label_robot->setPixmap(QPixmap::fromImage(*pRobot));
 
      pMap = new QImage();
-     pMap ->load ("/home/etudiant/Documents/GitHub/tp_robot_snirium/ihm_robot/map.png");
+     pMap ->load ("/home/etudiant/Documents/GitHub/tp_robot_snirium/ihm_robot/images/map.png");
      ui->label_map->setPixmap(QPixmap::fromImage(*pMap));
 
      //pFont = new QImage();

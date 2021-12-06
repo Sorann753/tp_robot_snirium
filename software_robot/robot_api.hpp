@@ -12,6 +12,8 @@
 #define ROBOT_API_HPP
 
 #include "robot.hpp"
+#include <queue>
+#include <mutex>
 
 
 
@@ -32,8 +34,16 @@ namespace robot{
         DOWN = 'B',
 
         //connection
-        CONNECT_STOP = 'S',
-        CONNECT_CLOSE = 'C'
+        CONNECT_STOP = 'S', // ferme le client
+        CONNECT_CLOSE = 'C' // ferme le server
+    };
+
+
+
+    /* @brief une structure qui contiens une mesure des capteurs */
+    struct SensorData {
+
+        //Fr
     };
 
 
@@ -62,6 +72,14 @@ namespace robot{
          * @note should be run in async
          */
         void executeOrder(std::string ordre);
+
+        /**
+         * @brief fonction qui lis les données des capteurs et les met dans la std::queue
+         * @param rien
+         * @return rien
+         * @note should be run in async
+         */
+        void readSensorData(); const
     };
 
 } //end namespace robot

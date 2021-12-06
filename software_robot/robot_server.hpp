@@ -13,6 +13,7 @@
 
 #include <iostream>
 #include <mutex>
+#include <queue>
 
 #include <unistd.h>
 #include <cerrno>
@@ -32,9 +33,9 @@ namespace robot {
 
         /**
          * @brief constructeur du Server
-         * @param api une reference vers l'api du robot
+         * @param rien
          */
-        Server(robot::Api& api);
+        Server();
 
 
 
@@ -48,11 +49,16 @@ namespace robot {
 
         /**
          * @brief methode qui écoute les transmission qui arrivent sur le serveur
-         * @param rien
+         * @param queueExec la queue qui permet de transmettre les ordres
+         * @param mutexExec le mutex utilisé pour protegé la queueExec
+         * @param queueSensor la queue qui permet de recevoir les données des capteurs
+         * @param mutexSensor le mutex utilisé pour protegé la queueSensor
          * @return rien
          * @note should be run in async
          */
-        void ecouter();
+        void ecouter(std::queue<char>* queueExec, std::mutex* mutexExec,
+                     std::queue<robot::SensorData>* queueSensor,
+                     std::mutex* mutexSensor);
 
 
 
@@ -83,11 +89,9 @@ namespace robot {
     private :
 
         int _sd_serveur; // l'identifiant du serveur
-        std::mutex _clientConnected; // un mutex pour empêcher de multiples connexions sur le robot
-        bool _connexionUsed; // 
+        bool _connexionUsed; // un boolean qui indique si un client est connecter
+        bool _serverOpen; // un boolean qui indique si le serveur est bien ouvert
         struct sockaddr_in _cfg_serveur; // une structure qui représente la config du serveur
-        robot::Api& _Robot; // une reference vers l'api du robot
-        
     };
 
 } //end namespace robot
