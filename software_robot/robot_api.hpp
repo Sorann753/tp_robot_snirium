@@ -2,8 +2,8 @@
  * @file robot_api.hpp
  * @brief header de la classe Robot::Api
  * @author arthus DORIATH
- * @date 29/11/2021
- * @version 0.4
+ * @date 07/12/2021
+ * @version 0.5
  */
 
 
@@ -66,12 +66,22 @@ namespace robot{
         ~Api();
 
         /**
+         * ! this class cannot be copied
+         */
+        Api& operator=(const Api&) = delete;
+            
+        /**
+         * ! this class cannot be copied
+         */
+        Api(const Api&) = delete;
+
+        /**
          * @brief fonction qui execute l'ordre recu par le server
-         * @param ordre l'ordre qui a été envoyé par le server
+         * @param 
          * @return rien
          * @note should be run in async
          */
-        void executeOrder(std::string ordre);
+        void executeOrder(std::queue<char>* queueExec, std::mutex* mutexExec);
 
         /**
          * @brief fonction qui lis les données des capteurs et les met dans la std::queue
@@ -79,7 +89,7 @@ namespace robot{
          * @return rien
          * @note should be run in async
          */
-        void readSensorData(); const
+        void readSensorData(std::queue<robot::SensorData>* queueSensor, std::mutex* mutexSensor) const;
     };
 
 } //end namespace robot

@@ -48,8 +48,8 @@ int main(int argc, char** argv) {
 
     //lancement des threads
     std::thread server_thread (&robot::Server::ecouter, &Server, &queueExec, &mutexExec, &queueSensor, &mutexSensor);
-    std::thread executing_thread (&robot::Api::executeOrder, &robot_lego);
-    std::thread sensor_thread (&robot::Api::readSensorData, &robot_lego);
+    std::thread executing_thread (&robot::Api::executeOrder, &robot_lego, &queueExec, &mutexExec);
+    std::thread sensor_thread (&robot::Api::readSensorData, &robot_lego, &queueSensor, &mutexSensor);
 
 
 

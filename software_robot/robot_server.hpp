@@ -67,7 +67,7 @@ namespace robot {
          * @param input_str le string a crypter
          * @return le string qui une fois crypte
          */
-        std::string crypt(std::string input_str){
+        std::string encrypt(std::string input_str){
 
             return input_str;
         }
@@ -79,7 +79,7 @@ namespace robot {
          * @param input_str le string a decrypter
          * @return le string une fois decrypte
          */
-        std::string decrypt(std::string input_str){
+        std::string uncrypt(std::string input_str){
 
             return input_str;
         }

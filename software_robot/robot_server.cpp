@@ -87,11 +87,12 @@ void ecouter(std::queue<char>* queueExec, std::mutex* mutexExec,
 
         // Réception de la requête du client
         memset(buffer, 0x00, 1024);
-        int nbOctets = recv(sd_client, buffer, sizeof(buffer), MSG_DONTWAIT);
+        int nbOctets = recv(sd_client, buffer, sizeof(buffer), MSG_DONTWAIT); //! si bug, vérifier ici
 
         if(nbOctets > 0){ //si l'on a reçus une trame on la traite
 
             std::string in_trame(buffer);
+            in_trame = uncrypt(in_trame);
             std::cout << "=> " << in_trame << std::endl;
 
             for(auto& i : in_trame){
@@ -151,8 +152,11 @@ void ecouter(std::queue<char>* queueExec, std::mutex* mutexExec,
             //déverouille le mutex
             mutexSensor->unlock();
 
-            //Formater les données des capteurs
+            //!Formater les données des capteurs
             std::string answer = "OK";
+
+            //chiffrage des données
+            std::string answer = encrypt(answer);
             
             // Envoi des données a l'IHM
             send(sd_client, answer.c_str(), answer.size(), 0);

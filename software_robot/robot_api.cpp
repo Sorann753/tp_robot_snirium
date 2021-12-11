@@ -2,8 +2,8 @@
  * @file robot_api.cpp
  * @brief code de la classe robot::Api
  * @author arthus DORIATH
- * @date 03/12/2021
- * @version 0.2
+ * @date 07/12/2021
+ * @version 0.3
  */
 
 
@@ -86,7 +86,7 @@ robot::Api::~Api(){
  * @return rien
  * @note should be run in async
  */
-void robot::Api::executeOrder(std::string ordre){
+void robot::Api::executeOrder(std::queue<char>* queueExec, std::mutex* mutexExec){
 
     for(auto& o : ordre){
 
