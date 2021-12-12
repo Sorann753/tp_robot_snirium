@@ -2,8 +2,8 @@
  * @file robot_serveur.cpp
  * @brief le code de la classe serveur du robot
  * @author arthus DORIATH
- * @date 06/12/2021
- * @version 0.5
+ * @date 12/12/2021
+ * @version 0.6
  */
 
 
@@ -14,13 +14,12 @@
 
 /**
  * @brief constructeur du Server
- * @param rien
+ * @param robot_lego l'api du robot
  */
-robot::Server::Server() {
-
+robot::Server::Server(robot::Api& robot_lego) : _apiRobot(robot_lego)
+{
     int PORT = 49'999;
     int err = 0;
-    _connexionUsed = false;
 
     // Création de la socket serveur
     _sd_serveur = socket(AF_INET, SOCK_STREAM, 0);
@@ -43,6 +42,7 @@ robot::Server::Server() {
     std::cout << "SERVER OPENED ON PORT " << PORT << std::endl;
 
     _serverOpen = true;
+    _apiRobot.setServerState(robot::State::WAITING);
 }
 
 
@@ -61,16 +61,11 @@ robot::Server::~Server(){
 
 /**
  * @brief methode qui écoute les transmission qui arrivent sur le serveur
- * @param queueExec la queue qui permet de transmettre les ordres
- * @param mutexExec le mutex utilisé pour protegé la queueExec
- * @param queueSensor la queue qui permet de recevoir les données des capteurs
- * @param mutexSensor le mutex utilisé pour protegé la queueSensor
+ * @param rien
  * @return rien
  * @note should be run in async
  */
-void ecouter(std::queue<char>* queueExec, std::mutex* mutexExec,
-                     std::queue<robot::SensorData>* queueSensor,
-                     std::mutex* mutexSensor)
+void robot::Server::ecouter()
 {
     int sd_client;
     char buffer[1024];
@@ -82,7 +77,9 @@ void ecouter(std::queue<char>* queueExec, std::mutex* mutexExec,
             std::cout << "AWAITING FOR CLIENT" << std::endl;
             sd_client = accept(_sd_serveur, NULL, NULL);
             std::cout << "CLIENT CONECTION" << std::endl;
+
             _connexionUsed = true;
+            _apiRobot.setServerState(robot::State::OPEN);
         }
 
         // Réception de la requête du client
@@ -104,6 +101,7 @@ void ecouter(std::queue<char>* queueExec, std::mutex* mutexExec,
                     // Fermeture de la socket client
                     close(sd_client);
                     _connexionUsed = false;
+                    _apiRobot.setServerState(robot::State::WAITING);
 
                     break;
                 }
@@ -117,40 +115,25 @@ void ecouter(std::queue<char>* queueExec, std::mutex* mutexExec,
 
                     // sortie de la boucle d'écoute
                     _serverOpen = false;
+                    _apiRobot.setServerState(robot::State::STOP);
                     break;
                 }
                 else{
 
-                    //verouille le mutex
-                    mutexExec->lock();
-
                     //add order to queue
-                    queueExec->push(i);
-                    
-                    //déverouille le mutex
-                    mutexExec->unlock();
+                    _apiRobot.pushOrder(i);
                 }
             }
         }
 
-        if(_connexionUsed){ //si l'on est toujours connecter a un client
 
-            //verouille le mutex
-            mutexSensor->lock();
-            
-            if(queueSensor->empty()){ //si la file est vide on saute l'envoie de données a l'IHM
-                
-                //déverouille le mutex
-                mutexSensor->unlock();
-                continue;
-            }
 
-            //on sort un élément de la file
-            robot::SensorData answer = queueSensor->front();
-            queueSensor->pop();
+        if(_connexionUsed){ //si l'on est toujours connecté a un client
 
-            //déverouille le mutex
-            mutexSensor->unlock();
+            //on récupère une mesure des capteurs
+            robot::SensorData data = _apiRobot.fetchSensorData();
+
+            if(data.isEmpty){ continue; }
 
             //!Formater les données des capteurs
             std::string answer = "OK";

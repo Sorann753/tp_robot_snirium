@@ -2,8 +2,8 @@
  * @file robot_api.cpp
  * @brief code de la classe robot::Api
  * @author arthus DORIATH
- * @date 07/12/2021
- * @version 0.3
+ * @date 12/12/2021
+ * @version 0.4
  */
 
 
@@ -16,7 +16,7 @@
  * @brief le constructeur de l'API du robot
  * @param rien
  */
-robot::Api::Api(){
+robot::Api::Api(){ //! potentiellement de la grosse merde, vérifier le fonctionnement de l'héritage des constructeurs
     
 	std::cout << "INITIALISATION DU ROBOT" << std::endl;
 
@@ -70,7 +70,7 @@ robot::Api::Api(){
  * @brief le destructeur de l'API du robot
  * @param rien
  */
-robot::Api::~Api(){
+robot::Api::~Api(){ //! potentiellement de la merde, vérifier le fonctionnement de l'héritage des destructeurs
 
     // Destruction des objets "moteurs"
 	delete pMoteurGauche;
@@ -81,56 +81,61 @@ robot::Api::~Api(){
 
 
 /**
- * @brief fonction qui execute l'ordre recu par le server
- * @param ordre l'ordre qui a été envoyé par le server
+ * @brief fonction qui execute les ordres recu par le server
+ * @param rien
  * @return rien
  * @note should be run in async
  */
-void robot::Api::executeOrder(std::queue<char>* queueExec, std::mutex* mutexExec){
+void robot::Api::executeOrder(){
 
-    for(auto& o : ordre){
 
-        switch(o){
+    while(_serverState != robot::State::STOP){
 
-            case Ordres::FORWARD : //si on demande au robot d'avancé
+		char ordre = fetchOrder();
+
+		if(ordre == robot::Ordres::NONE){ continue; }
+
+        switch(ordre){
+
+            case robot::Ordres::FORWARD : //si on demande au robot d'avancé
 
                 changerPuissanceMoteurs(100, 0, 100);
             break;
 
-            case Ordres::LEFT : //si on demande au robot de tourné a gauche
+            case robot::Ordres::LEFT : //si on demande au robot de tourné a gauche
 
                 changerPuissanceMoteurs(-50, 0, 50);
                 attendre(100);
                 changerPuissanceMoteurs(0, 0, 0);
             break;
 
-            case Ordres::RIGHT : //si on demande au robot de tourné a droite
+            case robot::Ordres::RIGHT : //si on demande au robot de tourné a droite
 
                 changerPuissanceMoteurs(50, 0, -50);
                 attendre(100);
                 changerPuissanceMoteurs(0, 0, 0);
             break;
 
-            case Ordres::BACKWARD : //si on demande au robot de reculé
+            case robot::Ordres::BACKWARD : //si on demande au robot de reculé
 
                 emettreSon(1000, 400, false);
                 changerPuissanceMoteurs(-100, 0, -100);
             break;
 
-            case Ordres::STOP : //si on demande au robot de s'arrêté
+            case robot::Ordres::STOP : //si on demande au robot de s'arrêté
 
                 changerPuissanceMoteurs(0, 0, 0);
             break;
 
 
 
-            case Ordres::UP : //si on demande au robot de levez le bras
+            case robot::Ordres::UP : //si on demande au robot de levez le bras
 
                 pMoteurCentral->set_duty_cycle_sp(100);
                 pMoteurCentral->run_direct();
             break;
 
-            case Ordres::DOWN : //si on demande au robot de baisser le bras
+            case robot::Ordres::DOWN : //si on demande au robot de baisser le bras
 
                 pMoteurCentral->set_duty_cycle_sp(-100);
                 pMoteurCentral->run_direct();

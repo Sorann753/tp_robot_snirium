@@ -2,8 +2,8 @@
  * @file robot_serveur.hpp
  * @brief header de la classe serveur du robot
  * @author arthus DORIATH
- * @date 27/11/2021
- * @version 05
+ * @date 12/12/2021
+ * @version 0.6
  */
 
 
@@ -33,9 +33,9 @@ namespace robot {
 
         /**
          * @brief constructeur du Server
-         * @param rien
+         * @param robot_lego l'api du robot
          */
-        Server();
+        Server(robot::Api& robot_lego);
 
 
 
@@ -49,16 +49,11 @@ namespace robot {
 
         /**
          * @brief methode qui écoute les transmission qui arrivent sur le serveur
-         * @param queueExec la queue qui permet de transmettre les ordres
-         * @param mutexExec le mutex utilisé pour protegé la queueExec
-         * @param queueSensor la queue qui permet de recevoir les données des capteurs
-         * @param mutexSensor le mutex utilisé pour protegé la queueSensor
+         * @param rien
          * @return rien
          * @note should be run in async
          */
-        void ecouter(std::queue<char>* queueExec, std::mutex* mutexExec,
-                     std::queue<robot::SensorData>* queueSensor,
-                     std::mutex* mutexSensor);
+        void ecouter();
 
 
 
@@ -89,9 +84,11 @@ namespace robot {
     private :
 
         int _sd_serveur; // l'identifiant du serveur
-        bool _connexionUsed; // un boolean qui indique si un client est connecter
-        bool _serverOpen; // un boolean qui indique si le serveur est bien ouvert
+        bool _connexionUsed = false; // un boolean qui indique si un client est connecté
+        bool _serverOpen = false; // un boolean qui indique si le serveur est bien ouvert
         struct sockaddr_in _cfg_serveur; // une structure qui représente la config du serveur
+
+        robot::Api& _apiRobot; // une reference vers l'api du robot lego
     };
 
 } //end namespace robot

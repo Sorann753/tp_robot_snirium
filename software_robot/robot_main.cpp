@@ -2,8 +2,8 @@
  * @file robot_software.cpp
  * @brief le programme principale du robot
  * @author arthus DORIATH
- * @date 03/12/2021
- * @version 0.6
+ * @date 12/12/2021
+ * @version 0.7
  */
 
 
@@ -39,17 +39,12 @@ int main(int argc, char** argv) {
     // Instanciation d'un objet robot::Server
     robot::Server Server(robot_lego);
 
-    std::queue<char> queueExec;
-    std::mutex mutexExec;
-    std::queue<robot::SensorData> queueSensor;
-    std::mutex mutexSensor;
-
 
 
     //lancement des threads
-    std::thread server_thread (&robot::Server::ecouter, &Server, &queueExec, &mutexExec, &queueSensor, &mutexSensor);
-    std::thread executing_thread (&robot::Api::executeOrder, &robot_lego, &queueExec, &mutexExec);
-    std::thread sensor_thread (&robot::Api::readSensorData, &robot_lego, &queueSensor, &mutexSensor);
+    std::thread server_thread (&robot::Server::ecouter, &Server);
+    std::thread executing_thread (&robot::Api::executeOrder, &robot_lego);
+    std::thread sensor_thread (&robot::Api::readSensorData, &robot_lego);
 
 
 
