@@ -1,0 +1,5 @@
+- verifier les contructeurs et destructeurs hérité
+- corrigé les inlines dans robot.cpp
+- faire fonctions initialisation chiffrage
+- faire fonctions chiffrage
+- tester return struct vide

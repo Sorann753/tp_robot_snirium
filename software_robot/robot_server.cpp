@@ -135,8 +135,17 @@ void robot::Server::ecouter()
 
             if(data.isEmpty){ continue; }
 
-            //!Formater les données des capteurs
-            std::string answer = "OK";
+            std::stringstream ss;
+            ss << "#;" << std::to_string(data.angle) << ";"
+                       << std::to_string(data.angle_speed) << ";"
+                       << std::to_string(data.angle_Mleft) << ";"
+                       << std::to_string(data.angle_Mcenter) << ";"
+                       << std::to_string(data.angle_Mright) << ";"
+                       << std::to_string(data.light) << ";"
+                       << std::to_string(data.dist) << ";"
+                       << std::to_string(data.batterie);
+
+            std::string answer = ss.str();
 
             //chiffrage des données
             std::string answer = encrypt(answer);

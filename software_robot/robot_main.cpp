@@ -13,15 +13,8 @@
 #include <queue>
 #include <mutex>
 
-// #include "robot.hpp"
 #include "robot_api.hpp"
 #include "robot_server.hpp"
-
-
-
-//batterie 6.5V => 0%
-//batterie ~8.23 => 100%
-// (X - 6.5) * 100 / 1.73
 
 
 

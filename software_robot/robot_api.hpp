@@ -152,7 +152,7 @@ namespace robot{
         /**
          * @brief fonction qui lis une valeur dans la queue Sensor
          * @param rien
-         * @return une mesure des capteur
+         * @return une mesure des capteur ou une mesure vide si la queue est vide
          */
         robot::SensorData fetchSensorData();
 
@@ -163,7 +163,7 @@ namespace robot{
          * @param newOrder
          * @return rien
          */
-        void pushOrder(const char& newOrder);
+        inline void pushOrder(char newOrder);
 
 
 
@@ -185,12 +185,77 @@ namespace robot{
 
 
 
+
+
+        /**
+         * @brief fonction qui fait avancer le robot
+         * @param rien
+         * @return rien
+         */
+        inline void goForward();
+
+
+
+        /**
+         * @brief fonction qui fait tourné le robot sur la gauche
+         * @param rien
+         * @return rien
+         */
+        inline void turnLeft();
+
+
+
+        /**
+         * @brief fonction qui fait tourné le robot sur la droite
+         * @param rien
+         * @return rien
+         */
+        inline void turnRight();
+
+
+
+        /**
+         * @brief fonction qui fait reculer le robot
+         * @param rien
+         * @return rien
+         */
+        inline void goBackward();
+
+
+
+        /**
+         * @brief fonction qui stope le déplacement robot
+         * @param rien
+         * @return rien
+         */
+        inline void stopMoving();
+
+
+
+        /**
+         * @brief fonction qui fait lever le bras du robot
+         * @param rien
+         * @return rien
+         */
+        inline void leverBras();
+        
+        
+        
+        /**
+         * @brief fonction qui fait baisser le bras du robot
+         * @param rien
+         * @return rien
+         */
+        inline void baisserBras();
+
+
+
     private:
 
         std::queue<char> _queueExec; // une std::queue qui enregistre les ordres a executé par le robot
         std::mutex _mutexExec; // le mutex qui protège _queueExec
 
-        std::queue<robot::SensorData> _queueSensor; // une std::queue qui enregistre les données des capteurs lues
+        std::queue<robot::SensorData>* _queueSensor; // une std::queue qui enregistre les données des capteurs lues
         std::mutex _mutexSensor; // le mutex qui protège _queueSensor
 
         char _serverState = robot::State::WAITING; // un char qui indique si le server est connecté a un client

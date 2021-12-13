@@ -20,6 +20,8 @@ robot::Api::Api(){ //! potentiellement de la grosse merde, vérifier le fonction
     
 	std::cout << "INITIALISATION DU ROBOT" << std::endl;
 
+	_queueSensor = new std::queue<robot::SensorData>();
+
 	// Instanciations dynamiques des objets "moteurs" selon leurs ports de sortie respectifs
 	pMoteurGauche = new ev3dev::large_motor("ev3-ports:outA");			// "outA"
 	pMoteurCentral = new ev3dev::medium_motor("ev3-ports:outB");        // "outB"
@@ -74,10 +76,14 @@ robot::Api::Api(){ //! potentiellement de la grosse merde, vérifier le fonction
  */
 robot::Api::~Api(){ //! potentiellement de la merde, vérifier le fonctionnement de l'héritage des destructeurs
 
+	stopMoving();
+
     // Destruction des objets "moteurs"
 	delete pMoteurGauche;
 	delete pMoteurCentral;
 	delete pMoteurDroit;
+
+	delete _queueSensor;
 }
 
 
@@ -102,55 +108,48 @@ void robot::Api::executeOrder(){
 			
             case robot::Ordres::FORWARD : //si on demande au robot d'avancé
 
-                changerPuissanceMoteurs(100, 0, 100);
+				goForward();
             break;
 
             case robot::Ordres::LEFT : //si on demande au robot de tourné a gauche
 
-                changerPuissanceMoteurs(-50, 0, 50);
-                attendre(100);
-                changerPuissanceMoteurs(0, 0, 0);
+                turnLeft();
             break;
 
             case robot::Ordres::RIGHT : //si on demande au robot de tourné a droite
 
-                changerPuissanceMoteurs(50, 0, -50);
-                attendre(100);
-                changerPuissanceMoteurs(0, 0, 0);
+                turnRight();
             break;
 
             case robot::Ordres::BACKWARD : //si on demande au robot de reculé
 
-                emettreSon(1000, 400, false);
-                changerPuissanceMoteurs(-100, 0, -100);
+                goBackward();
             break;
 
             case robot::Ordres::STOP : //si on demande au robot de s'arrêté
 
-                changerPuissanceMoteurs(0, 0, 0);
+                stopMoving();
             break;
 
 
 
             case robot::Ordres::UP : //si on demande au robot de levez le bras
 
-                pMoteurCentral->set_duty_cycle_sp(100);
-                pMoteurCentral->run_direct();
+                leverBras();
             break;
 
             case robot::Ordres::DOWN : //si on demande au robot de baisser le bras
 
-                pMoteurCentral->set_duty_cycle_sp(-100);
-                pMoteurCentral->run_direct();
+                baisserBras();
             break;
         }
 
 		//fait reculé le robot automatiquement si il cogne un mur
 		if(recupererEtatCapteurContact()){
 
-			emettreSon(1000, 450, false);
-			changerPuissanceMoteurs(-100, 0, -100);
+			goBackward();
 			attendre(500);
+			stopMoving();
 		}
     }
 }
@@ -199,11 +198,18 @@ void robot::Api::readSensorData(){
 		}
 
 		//traitement des données
-		//on arondis les angles a 360 près
-		Data.angle %= 360;
-		Data.angle_Mleft %= 360;
-		Data.angle_Mcenter %= 360;
-		Data.angle_Mright %= 360;
+		//on arondis les angles au 360 près
+		Data.angle 			%= 360;
+		while(Data.angle < 0){ Data.angle += 360; }
+
+		Data.angle_Mleft 	%= 360;
+		while(Data.angle_Mleft < 0){ Data.angle_Mleft += 360; }
+
+		Data.angle_Mcenter 	%= 360;
+		while(Data.angle_Mcenter < 0){ Data.angle_Mcenter += 360; }
+
+		Data.angle_Mright 	%= 360;
+		while(Data.angle_Mright < 0){ Data.angle_Mright += 360; }
 
 		//on inverse les valeurs, 0 => pas de snirium   100 => beaucoup de snirium
 		Data.light = (Data.light-100) * (-1);
@@ -211,7 +217,196 @@ void robot::Api::readSensorData(){
 		//on exprime la batterie en %
 		Data.batterie = (Data.batterie - 6.5) * 100.0 / 1.73;
 
+		Data.isEmpty = false;
+
 		//ajout des données dans la queue
 		pushSensorData(Data);
 	}
+}
+
+
+
+
+
+/**
+ * @brief fonction qui ajoute une valeur dans la queue Sensor
+ * @param newData
+ * @return rien
+ */
+void robot::Api::pushSensorData(const robot::SensorData& newData){
+
+	_mutexSensor.lock();
+	_queueSensor->push(newData);
+	_mutexSensor.unlock();
+}
+
+
+
+/**
+ * @brief fonction qui lis une valeur dans la queue Sensor
+ * @param rien
+ * @return une mesure des capteur ou une mesure vide si la queue est vide
+ */
+robot::SensorData robot::Api::fetchSensorData(){
+
+	_mutexSensor.lock();
+
+	if(_queueSensor->empty()){
+
+		_mutexSensor.unlock();
+		return robot::SensorData(); //! faire test unitaire pour vérifier le comportement
+	}
+
+	robot::SensorData data = _queueSensor->front();
+	_queueSensor->pop();
+
+	_mutexSensor.unlock();
+
+	return data;
+}
+
+
+
+/**
+ * @brief fonction qui ajoute une valeur dans la queue Exec
+ * @param newOrder
+ * @return rien
+ */
+void robot::Api::pushOrder(char newOrder){
+
+	_mutexExec.lock();
+	_queueExec.push(newOrder);
+	_mutexExec.unlock();
+}
+
+
+
+/**
+ * @brief fonction qui lis une valeur dans la queue Exec
+ * @param rien
+ * @return un Ordre a executer
+ */
+char robot::Api::fetchOrder(){
+
+	_mutexExec.lock();
+
+	if(_queueExec.empty()){
+
+		_mutexExec.unlock();
+		return robot::Ordres::NONE;
+	}
+
+	char ordre = _queueExec.front();
+	_queueExec.pop();
+
+	_mutexExec.unlock();
+
+	return ordre;
+}
+
+
+
+/**
+ * @brief fonction qui lis une valeur dans la queue Exec
+ * @param newState le nouvel état du server
+ * @return un Ordre a executer
+ */
+void robot::Api::setServerState(char newState){
+
+	if(newState <= 1 && newState >= -1){
+		_serverState = newState;
+	}
+}
+
+
+
+
+
+/**
+ * @brief fonction qui fait avancer le robot
+ * @param rien
+ * @return rien
+ */
+void robot::Api::goForward(){
+
+	changerPuissanceMoteurs(100, 0, 100);	
+}
+
+
+
+/**
+ * @brief fonction qui fait tourné le robot sur la gauche
+ * @param rien
+ * @return rien
+ */
+void robot::Api::turnLeft(){
+
+	changerPuissanceMoteurs(-50, 0, 50);
+    attendre(100);
+    changerPuissanceMoteurs(0, 0, 0);
+}
+
+
+
+/**
+ * @brief fonction qui fait tourné le robot sur la droite
+ * @param rien
+ * @return rien
+ */
+void robot::Api::turnRight(){
+
+	changerPuissanceMoteurs(50, 0, -50);
+    attendre(100);
+    changerPuissanceMoteurs(0, 0, 0);
+}
+
+
+
+/**
+ * @brief fonction qui fait reculer le robot
+ * @param rien
+ * @return rien
+ */
+void robot::Api::goBackward(){
+
+	emettreSon(1000, 400, false);
+    changerPuissanceMoteurs(-100, 0, -100);
+}
+
+
+
+/**
+ * @brief fonction qui stope le déplacement robot
+ * @param rien
+ * @return rien
+ */
+void robot::Api::stopMoving(){
+
+	changerPuissanceMoteurs(0, 0, 0);
+}
+
+
+
+/**
+ * @brief fonction qui fait lever le bras du robot
+ * @param rien
+ * @return rien
+ */
+void robot::Api::leverBras(){
+
+	pMoteurCentral->set_duty_cycle_sp(100);
+    pMoteurCentral->run_direct();
+}
+
+
+
+/**
+ * @brief fonction qui fait baisser le bras du robot
+ * @param rien
+ * @return rien
+ */
+void robot::Api::baisserBras(){
+
+	pMoteurCentral->set_duty_cycle_sp(-100);
+	pMoteurCentral->run_direct();
 }

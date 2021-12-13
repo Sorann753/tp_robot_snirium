@@ -14,6 +14,7 @@
 #include <iostream>
 #include <mutex>
 #include <queue>
+#include <sstream>
 
 #include <unistd.h>
 #include <cerrno>
