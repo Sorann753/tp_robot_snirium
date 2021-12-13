@@ -61,14 +61,14 @@ public:
 	/**
 	 * Méthode pour récupérer l'angle issu du capteur gyroscopique
 	 * @param aucun
-	 * @return l'angle du robot
+	 * @return l'angle du robot en degree
 	 */
 	int recupererGyroscopeAngle();
 
 	/**
 	 * Méthode pour récupérer la vitesse angulaire issue du capteur gyroscopique
 	 * @param aucun
-	 * @return la vitesse angulaire du robot
+	 * @return la vitesse angulaire du robot en degree/seconde
 	 */
 	int recupererGyroscopeVitesse();
 

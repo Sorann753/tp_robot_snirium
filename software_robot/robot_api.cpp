@@ -66,6 +66,8 @@ robot::Api::Api(){ //! potentiellement de la grosse merde, vérifier le fonction
 
 
 
+
+
 /**
  * @brief le destructeur de l'API du robot
  * @param rien
@@ -80,6 +82,8 @@ robot::Api::~Api(){ //! potentiellement de la merde, vérifier le fonctionnement
 
 
 
+
+
 /**
  * @brief fonction qui execute les ordres recu par le server
  * @param rien
@@ -88,15 +92,14 @@ robot::Api::~Api(){ //! potentiellement de la merde, vérifier le fonctionnement
  */
 void robot::Api::executeOrder(){
 
-
     while(_serverState != robot::State::STOP){
 
 		char ordre = fetchOrder();
 
-		if(ordre == robot::Ordres::NONE){ continue; }
+		if(ordre == robot::Ordres::NONE){ continue; } //! si problème de performance mettre attendre() ici
 
         switch(ordre){
-
+			
             case robot::Ordres::FORWARD : //si on demande au robot d'avancé
 
                 changerPuissanceMoteurs(100, 0, 100);
@@ -141,5 +144,74 @@ void robot::Api::executeOrder(){
                 pMoteurCentral->run_direct();
             break;
         }
+
+		//fait reculé le robot automatiquement si il cogne un mur
+		if(recupererEtatCapteurContact()){
+
+			emettreSon(1000, 450, false);
+			changerPuissanceMoteurs(-100, 0, -100);
+			attendre(500);
+		}
     }
+}
+
+
+
+
+
+/**
+ * @brief fonction qui lis les données des capteurs et les met dans la std::queue
+ * @param rien
+ * @return rien
+ * @note should be run in async
+ */
+void robot::Api::readSensorData(){
+
+	while(_serverState != robot::State::STOP){
+	
+		if(_serverState == robot::State::WAITING){
+
+			//si il n'y a pas de client on attend 100ms avant de revérifier si un client est arrivé
+			attendre(100);
+			continue;
+		}
+
+		//le server est connecté a un client
+
+		// une structure qui vas enregistré les donnés des capteur au moment de la mesure
+		robot::SensorData Data;
+
+		//lecture des capteurs
+		try{
+			Data.angle 		 = recupererGyroscopeAngle();
+			Data.angle_speed = recupererGyroscopeVitesse();
+
+			recupererPositionsDesMoteurs(Data.angle_Mleft, Data.angle_Mcenter, Data.angle_Mright);
+
+			Data.light 		 = recupererLumiereReflechie();
+			Data.dist 		 = recupererDistance();
+			Data.batterie 	 = recupererBatterieTension();
+		}
+		catch(std::system_error e){
+
+			std::cerr << "CRITICAL ERROR " << e.code() << " : " << e.what() << std::endl;
+			continue;
+		}
+
+		//traitement des données
+		//on arondis les angles a 360 près
+		Data.angle %= 360;
+		Data.angle_Mleft %= 360;
+		Data.angle_Mcenter %= 360;
+		Data.angle_Mright %= 360;
+
+		//on inverse les valeurs, 0 => pas de snirium   100 => beaucoup de snirium
+		Data.light = (Data.light-100) * (-1);
+
+		//on exprime la batterie en %
+		Data.batterie = (Data.batterie - 6.5) * 100.0 / 1.73;
+
+		//ajout des données dans la queue
+		pushSensorData(Data);
+	}
 }

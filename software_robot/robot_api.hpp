@@ -62,8 +62,19 @@ namespace robot{
      */
     struct SensorData {
 
-        bool isEmpty = true;
-        //FR
+        bool isEmpty = true;    //indique si la structure est remplie ou vide
+        
+        int angle = 0;          //l'orientation du robot en degree
+        int angle_speed = 0;    //la vitesse de rotation du robot en degree / sec
+
+        int angle_Mleft = 0;    //l'angle du moteur gauche en degree
+        int angle_Mcenter = 0;  //l'angle du moteur centrale (bras) en degree
+        int angle_Mright = 0;   //l'angle du moteur droit en degree
+
+        int light = 0;          //la lumière réfléchie par la surface 0 => clair   100 => sombre
+        float dist = 0;         //la distance avec un obstacle en cm
+
+        float batterie = 0;     //le pourcentage de batterie du robot
     };
 
 
@@ -134,7 +145,7 @@ namespace robot{
          * @param newData
          * @return rien
          */
-        void pushSensorData(robot::SensorData newData);
+        void pushSensorData(const robot::SensorData& newData);
 
 
 
@@ -152,7 +163,7 @@ namespace robot{
          * @param newOrder
          * @return rien
          */
-        void pushOrder(char newOrder);
+        void pushOrder(const char& newOrder);
 
 
 
