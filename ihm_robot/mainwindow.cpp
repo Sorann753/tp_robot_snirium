@@ -32,6 +32,15 @@ MainWindow::MainWindow(QWidget *parent)
      pMap ->load ("/home/etudiant/Documents/GitHub/tp_robot_snirium/ihm_robot/images/map.png");
      ui->label_map->setPixmap(QPixmap::fromImage(*pMap));
 
+     pLogo = new QImage();
+     pLogo -> load("/home/etudiant/Bureau/spacex-logo.png");
+     ui->label_logo->setPixmap(QPixmap::fromImage(*pLogo));
+
+     pFond = new QImage();
+     pFond -> load("/home/etudiant/Bureau/FOND-UNIVERS-2.jpg");
+     ui->label_fond->setPixmap(QPixmap::fromImage(*pFond));
+
+
      //pFont = new QImage();
      //pFont ->load ("/home/etudiant/Documents/image-blanche-800x548px.jpg");
      //ui->label_font->setPixmap(QPixmap::fromImage(*pFont));
@@ -46,6 +55,7 @@ MainWindow::MainWindow(QWidget *parent)
  */
 MainWindow::~MainWindow()
 {
+    tcpSocket->write(deconnection);
     delete ui;
 
 }
@@ -69,7 +79,7 @@ void MainWindow::on_pushButton_connexion_clicked()
      // Connexion au serveur
      tcpSocket->connectToHost(adresse_ip, port_tcp);
 
-     // Lancement du timer avec un tick toutes les 1000 ms
+     // Lancement du timer avec un ticstopk toutes les 1000 ms
      pTimer->start(1000);
 
 }
@@ -77,6 +87,7 @@ void MainWindow::on_pushButton_connexion_clicked()
 void MainWindow::on_pushButton_deconnexion_clicked()
 {
     // Déconnexion du serveur
+    tcpSocket->write(deconnection);
     tcpSocket->close();
 }
 
@@ -86,7 +97,10 @@ void MainWindow::on_pushButton_deconnexion_clicked()
     /////////////////////////
     // bouton de direction //
     /////////////////////////
-
+void MainWindow::on_pushButton_stop_pressed()
+{
+    tcpSocket->write(stop);
+}
 
 
 void MainWindow::on_pushButton_avancer_pressed()

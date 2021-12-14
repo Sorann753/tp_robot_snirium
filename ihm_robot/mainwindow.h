@@ -56,6 +56,8 @@ private slots:
 
     void on_pushButton_deconnexion_clicked();
 
+    void on_pushButton_stop_pressed();
+
     void gerer_donnees();
 
     void placer_robot();
@@ -67,6 +69,8 @@ private:
     QTimer *pTimer;
     QImage * pRobot;
     QImage* pMap;
+    QImage* pLogo;
+    QImage* pFond;
     //QImage*pFont;
     QTcpSocket *tcpSocket;
     int angle = 0; //l'angle en degree
@@ -80,6 +84,8 @@ private:
     const QByteArray reculer = "R";
     const QByteArray lever = "H";
     const QByteArray baisser = "B";
+    const QByteArray stop = "s";
+    const QByteArray deconnection = "S";
 };
 
 #endif // MAINWINDOW_H
