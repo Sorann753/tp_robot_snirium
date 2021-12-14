@@ -53,8 +53,18 @@ robot::Server::Server(robot::Api& robot_lego) : _apiRobot(robot_lego)
  */
 robot::Server::~Server(){
 
-    // Fermeture de la socket serveur
-    close(_sd_serveur);
+    if(_connexionUsed){ //si le client n'a pas été fermé
+
+        // Fermeture de la socket client
+        shutdown(_sd_client, SHUT_RDWR);
+        close(_sd_client);
+    }
+
+    if(_serverOpen){ //si le server n'a pas été fermé
+
+        // Fermeture de la socket serveur
+        close(_sd_serveur);
+    }
 }
 
 
@@ -67,24 +77,42 @@ robot::Server::~Server(){
  */
 void robot::Server::ecouter()
 {
-    int sd_client;
     char buffer[1024];
+    int compteur = 0; //compteur pour rallentir la fréquence de ping
+    std::string ping = "!";
 
     while(_serverOpen) {
         // si un client se connecte au robot et qu'il n'y a pas encore de client,
         // une nouvelle socket est créée pour gérer le client
         if(!_connexionUsed){
             std::cout << "AWAITING FOR CLIENT" << std::endl;
-            sd_client = accept(_sd_serveur, NULL, NULL);
-            std::cout << "CLIENT CONECTION" << std::endl;
+            _sd_client = accept(_sd_serveur, NULL, NULL);
+            std::cout << "CLIENT CONNECTION" << std::endl;
 
             _connexionUsed = true;
             _apiRobot.setServerState(robot::State::OPEN);
         }
+        else if(compteur % 10 == 0){ //si un client est connecté on teste qu'il soit toujours joignable
+
+            int err = write(_sd_client, ping.c_str(), ping.size());
+            
+            if(err < 0){
+
+                std::cerr << "CONNECTION LOST" << std::endl;
+
+                // Fermeture de la socket client
+                shutdown(_sd_client, SHUT_RDWR);
+                close(_sd_client);
+                _connexionUsed = false;
+                _apiRobot.setServerState(robot::State::WAITING);
+
+            }
+            if(compteur > 1'000'000){ compteur = 0; } //si le compteur est trop haut on le réinitialise
+        }
 
         // Réception de la requête du client
         memset(buffer, 0x00, 1024);
-        int nbOctets = recv(sd_client, buffer, sizeof(buffer), MSG_DONTWAIT); //! si bug, vérifier ici
+        int nbOctets = recv(_sd_client, buffer, sizeof(buffer), MSG_DONTWAIT);
 
         if(nbOctets > 0){ //si l'on a reçus une trame on la traite
 
@@ -99,7 +127,8 @@ void robot::Server::ecouter()
                     std::cout << "CLIENT DISCONECTION" << std::endl;
 
                     // Fermeture de la socket client
-                    close(sd_client);
+                    shutdown(_sd_client, SHUT_RDWR);
+                    close(_sd_client);
                     _connexionUsed = false;
                     _apiRobot.setServerState(robot::State::WAITING);
 
@@ -110,13 +139,14 @@ void robot::Server::ecouter()
                     std::cout << "CLOSING SERVER" << std::endl;
 
                     // Fermeture de la socket client
-                    close(sd_client);
+                    shutdown(_sd_client, SHUT_RDWR);
+                    close(_sd_client);
                     _connexionUsed = false;
 
                     // sortie de la boucle d'écoute
                     _serverOpen = false;
-                    _apiRobot.setServerState(robot::State::STOP);
-                    break;
+                    _apiRobot.setServerState(robot::State::CLOSED);
+                    return;
                 }
                 else{
 
@@ -146,13 +176,36 @@ void robot::Server::ecouter()
                        << std::to_string(data.batterie);
 
             std::string answer = ss.str();
+            std::cout << "<= " << answer << std::endl;
 
             //chiffrage des données
-            std::string answer = encrypt(answer);
+            answer = encrypt(answer);
             
             // Envoi des données a l'IHM
-            send(sd_client, answer.c_str(), answer.size(), 0);
-            std::cout << "<= " << answer << std::endl;
+            send(_sd_client, answer.c_str(), answer.size(), 0);
         }
+
+
+
+        //système d'extinction d'urgence
+        if(_apiRobot.getStateBouttonOFF()){
+
+            std::cout << "CLOSING SERVER" << std::endl;
+
+            // Fermeture de la socket client
+            if(_connexionUsed){
+
+                shutdown(_sd_client, SHUT_RDWR);
+                close(_sd_client);
+                _connexionUsed = false;
+            }
+
+            // sortie de la boucle d'écoute
+            _serverOpen = false;
+            _apiRobot.setServerState(robot::State::CLOSED);
+            break;
+        }
+
+        compteur++;
     }
 }

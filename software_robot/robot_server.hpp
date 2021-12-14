@@ -85,6 +85,7 @@ namespace robot {
     private :
 
         int _sd_serveur; // l'identifiant du serveur
+        int _sd_client; // l'identifiant du client
         bool _connexionUsed = false; // un boolean qui indique si un client est connecté
         bool _serverOpen = false; // un boolean qui indique si le serveur est bien ouvert
         struct sockaddr_in _cfg_serveur; // une structure qui représente la config du serveur

@@ -1,5 +1,13 @@
-- verifier les contructeurs et destructeurs hérité
-- corrigé les inlines dans robot.cpp
-- faire fonctions initialisation chiffrage
-- faire fonctions chiffrage
-- tester return struct vide
+SERVER:
+- faire fonctions initialisation chiffrage (XOR => RSA?)
+- faire fonctions chiffrage (XOR => AES?)
+- tester return struct vide (seems OK)
+- faire bip de marche arrière
+
+IHM:
+- faire déplacement par vecteur
+    -> faire calcule de vitesse
+- faire raycasting
+    -> recentré le rayons de lumière
+- faire classe BDD
+    -> faire BDD de stockage

@@ -1,5 +1,5 @@
 #ignore le dossier de build QT
-build-ihm_robot-Desktop-Debug/
+build-ihm_robot*/
 
 #ignore le fichier de projet QT
 ihm_robot/*.pro.user

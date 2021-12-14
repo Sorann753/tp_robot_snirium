@@ -50,9 +50,9 @@ namespace robot{
      */
     enum State {
     
-        STOP = -1,  //server is closed
         WAITING,    //server is waiting for client
         OPEN,       //server is connected to client
+        CLOSED,     //server is closed
     };
 
 
@@ -163,7 +163,7 @@ namespace robot{
          * @param newOrder
          * @return rien
          */
-        inline void pushOrder(char newOrder);
+        void pushOrder(char newOrder);
 
 
 
@@ -181,7 +181,7 @@ namespace robot{
          * @param newState le nouvel état du server
          * @return un Ordre a executer
          */
-        inline void setServerState(char newState);
+        void setServerState(char newState);
 
 
 
@@ -192,7 +192,7 @@ namespace robot{
          * @param rien
          * @return rien
          */
-        inline void goForward();
+        void goForward();
 
 
 
@@ -201,7 +201,7 @@ namespace robot{
          * @param rien
          * @return rien
          */
-        inline void turnLeft();
+        void turnLeft();
 
 
 
@@ -210,7 +210,7 @@ namespace robot{
          * @param rien
          * @return rien
          */
-        inline void turnRight();
+        void turnRight();
 
 
 
@@ -219,7 +219,7 @@ namespace robot{
          * @param rien
          * @return rien
          */
-        inline void goBackward();
+        void goBackward();
 
 
 
@@ -228,7 +228,7 @@ namespace robot{
          * @param rien
          * @return rien
          */
-        inline void stopMoving();
+        void stopMoving();
 
 
 
@@ -237,7 +237,7 @@ namespace robot{
          * @param rien
          * @return rien
          */
-        inline void leverBras();
+        void leverBras();
         
         
         
@@ -246,7 +246,16 @@ namespace robot{
          * @param rien
          * @return rien
          */
-        inline void baisserBras();
+        void baisserBras();
+
+
+
+        /**
+         * @brief fonction qui renvoie l'etat du bouton retour
+         * @param rien
+         * @return true si le bouton est pressé, false si non
+         */
+        bool getStateBouttonOFF();
 
 
 

@@ -12,6 +12,7 @@
 #include <iostream>
 #include <queue>
 #include <mutex>
+#include <signal.h>
 
 #include "robot_api.hpp"
 #include "robot_server.hpp"
@@ -25,6 +26,9 @@
  * @return un code d'erreur
  */
 int main(int argc, char** argv) {
+
+    //empèche le programme de ce fermé lors d'une deconnection inprévus du client
+    signal(SIGPIPE,SIG_IGN);
 
     // Instanciation d'un objet robot::Api
     robot::Api robot_lego;
@@ -44,7 +48,6 @@ int main(int argc, char** argv) {
     server_thread.join();
     executing_thread.join();
     sensor_thread.join();
-
 
 
     // Fin du programme

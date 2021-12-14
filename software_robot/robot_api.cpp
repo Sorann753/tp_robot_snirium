@@ -16,52 +16,9 @@
  * @brief le constructeur de l'API du robot
  * @param rien
  */
-robot::Api::Api(){ //! potentiellement de la grosse merde, vérifier le fonctionnement de l'héritage des constructeurs
+robot::Api::Api(){
     
-	std::cout << "INITIALISATION DU ROBOT" << std::endl;
-
 	_queueSensor = new std::queue<robot::SensorData>();
-
-	// Instanciations dynamiques des objets "moteurs" selon leurs ports de sortie respectifs
-	pMoteurGauche = new ev3dev::large_motor("ev3-ports:outA");			// "outA"
-	pMoteurCentral = new ev3dev::medium_motor("ev3-ports:outB");        // "outB"
-	pMoteurDroit = new ev3dev::large_motor("ev3-ports:outC");			// "outC"
-
-	// Vérifications de la présence des moteurs
-	if (!pMoteurGauche->connected())
-		std::cout << "ERREUR => Le moteur gauche ne semble pas présent (port A)" << std::endl;
-
-	if (!pMoteurCentral->connected())
-		std::cout << "ERREUR => Le moteur central ne semble pas présent (port B)" << std::endl;
-
-	if (!pMoteurDroit->connected())
-		std::cout << "ERREUR => Le moteur droit ne semble pas présent (port C)" << std::endl;
-
-	// Initialisations des moteurs
-	initialiserMoteurs();
-	
-	// Vérification de la présence des capteurs
-	if (!capteurAngle.connected())
-	{
-		std::cout << "ERREUR => Le capteur d'angle ne semble pas présent" << std::endl;
-	}
-	else
-	{
-		initialiserGyroscope();
-	}
-
-	if (!capteurContact.connected())
-	{
-		std::cout << "ERREUR => Le capteur de contact ne semble pas présent" << std::endl;
-	}
-	if (!capteurCouleur.connected())
-	{
-		std::cout << "ERREUR => Le capteur de couleur ne semble pas présent" << std::endl;
-	}
-	if (!capteurDistance.connected())
-	{
-		std::cout << "ERREUR => Le capteur de distance ne semble pas présent" << std::endl;
-	}
 
     std::cout << "ROBOT PRET" << std::endl;
 }
@@ -74,14 +31,7 @@ robot::Api::Api(){ //! potentiellement de la grosse merde, vérifier le fonction
  * @brief le destructeur de l'API du robot
  * @param rien
  */
-robot::Api::~Api(){ //! potentiellement de la merde, vérifier le fonctionnement de l'héritage des destructeurs
-
-	stopMoving();
-
-    // Destruction des objets "moteurs"
-	delete pMoteurGauche;
-	delete pMoteurCentral;
-	delete pMoteurDroit;
+robot::Api::~Api(){
 
 	delete _queueSensor;
 }
@@ -98,12 +48,17 @@ robot::Api::~Api(){ //! potentiellement de la merde, vérifier le fonctionnement
  */
 void robot::Api::executeOrder(){
 
-    while(_serverState != robot::State::STOP){
+    while(_serverState != robot::State::CLOSED){
 
 		char ordre = fetchOrder();
 
-		if(ordre == robot::Ordres::NONE){ continue; } //! si problème de performance mettre attendre() ici
+		if(ordre == robot::Ordres::NONE){
 
+			attendre(500);
+			continue;
+		}
+
+		std::cout << "excuting order" << std::endl;
         switch(ordre){
 			
             case robot::Ordres::FORWARD : //si on demande au robot d'avancé
@@ -151,7 +106,12 @@ void robot::Api::executeOrder(){
 			attendre(500);
 			stopMoving();
 		}
+
+		//on ralentis l'execution du thread
+		attendre(100);
     }
+
+	stopMoving();
 }
 
 
@@ -166,16 +126,16 @@ void robot::Api::executeOrder(){
  */
 void robot::Api::readSensorData(){
 
-	while(_serverState != robot::State::STOP){
-	
+	while(_serverState != robot::State::CLOSED){
+
 		if(_serverState == robot::State::WAITING){
 
 			//si il n'y a pas de client on attend 100ms avant de revérifier si un client est arrivé
-			attendre(100);
+			attendre(500);
 			continue;
 		}
 
-		//le server est connecté a un client
+		//* le server est connecté a un client
 
 		// une structure qui vas enregistré les donnés des capteur au moment de la mesure
 		robot::SensorData Data;
@@ -221,6 +181,9 @@ void robot::Api::readSensorData(){
 
 		//ajout des données dans la queue
 		pushSensorData(Data);
+
+		//on ralentis l'execution du thread
+		attendre(100);
 	}
 }
 
@@ -313,9 +276,7 @@ char robot::Api::fetchOrder(){
  */
 void robot::Api::setServerState(char newState){
 
-	if(newState <= 1 && newState >= -1){
-		_serverState = newState;
-	}
+	_serverState = newState;
 }
 
 
@@ -409,4 +370,16 @@ void robot::Api::baisserBras(){
 
 	pMoteurCentral->set_duty_cycle_sp(-100);
 	pMoteurCentral->run_direct();
+}
+
+
+
+/**
+ * @brief fonction qui renvoie l'etat du bouton retour
+ * @param rien
+ * @return true si le bouton est pressé, false si non
+ */
+bool robot::Api::getStateBouttonOFF(){
+
+	return recupererEtatBoutonRetour();
 }

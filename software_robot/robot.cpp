@@ -19,6 +19,8 @@
 Robot::Robot()
 {
 	
+	std::cout << "INITIALISATION DU ROBOT" << std::endl;
+
 	// Instanciations dynamiques des objets "moteurs" selon leurs ports de sortie respectifs
 	pMoteurGauche = new ev3dev::large_motor("ev3-ports:outA");			// "outA"
 	pMoteurCentral = new ev3dev::medium_motor("ev3-ports:outB");	// "outB"
@@ -87,13 +89,13 @@ void Robot::attendre(int delai_en_millisecondes)
 //==============================================================================
 // Méthodes pour gérer le gyroscope
 //==============================================================================
-inline int Robot::recupererGyroscopeAngle()
+int Robot::recupererGyroscopeAngle()
 {
 	return capteurAngle.angle();
 }
 
 
-inline int Robot::recupererGyroscopeVitesse()
+int Robot::recupererGyroscopeVitesse()
 {
 	return capteurAngle.rate();
 }
@@ -109,7 +111,7 @@ void Robot::initialiserGyroscope()
 //==============================================================================
 // Méthodes pour gérer le capteur de contact
 //==============================================================================
-inline bool Robot::recupererEtatCapteurContact()
+bool Robot::recupererEtatCapteurContact()
 {
 	return capteurContact.is_pressed();
 }
@@ -118,32 +120,32 @@ inline bool Robot::recupererEtatCapteurContact()
 //==============================================================================
 // Méthodes pour gérer le capteur de couleur
 //==============================================================================
-inline int Robot::recupererLumiereReflechie()
+int Robot::recupererLumiereReflechie()
 {
 	return capteurCouleur.reflected_light_intensity();
 }
 
-inline int Robot::recupererLumiereAmbiante()
+int Robot::recupererLumiereAmbiante()
 {
 	return capteurCouleur.ambient_light_intensity();
 }
 
-inline int Robot::recupererCouleurCode()
+int Robot::recupererCouleurCode()
 {
 	return capteurCouleur.color();
 }
 
-inline int Robot::recupererCouleurRouge()
+int Robot::recupererCouleurRouge()
 {
 	return capteurCouleur.red();
 }
 
-inline int Robot::recupererCouleurVerte()
+int Robot::recupererCouleurVerte()
 {
 	return capteurCouleur.green();
 }
 
-inline int Robot::recupererCouleurBleue()
+int Robot::recupererCouleurBleue()
 {
 	return capteurCouleur.blue();
 }
@@ -152,7 +154,7 @@ inline int Robot::recupererCouleurBleue()
 //==============================================================================
 // Méthodes pour gérer le capteur de distance (ultrason)
 //==============================================================================
-inline float Robot::recupererDistance()
+float Robot::recupererDistance()
 {
 	return capteurDistance.distance_centimeters();
 }
@@ -161,12 +163,12 @@ inline float Robot::recupererDistance()
 //==============================================================================
 // Méthodes pour gérer la batterie
 //==============================================================================
-inline float Robot::recupererBatterieTension()
+float Robot::recupererBatterieTension()
 {
 	return ev3dev::power_supply::battery.measured_volts();
 }
 
-inline float Robot::recupererBatterieIntensite()
+float Robot::recupererBatterieIntensite()
 {
 	return ev3dev::power_supply::battery.measured_amps();
 }
@@ -197,32 +199,32 @@ void Robot::eteindrePixel(int x, int y)
 //==============================================================================
 // Méthodes pour gérer les boutons
 //==============================================================================
-inline bool Robot::recupererEtatBoutonHaut()
+bool Robot::recupererEtatBoutonHaut()
 {
 	return ev3dev::button::up.pressed();
 }
 
-inline bool Robot::recupererEtatBoutonBas()
+bool Robot::recupererEtatBoutonBas()
 {
 	return ev3dev::button::down.pressed();
 }
 
-inline bool Robot::recupererEtatBoutonDroite()
+bool Robot::recupererEtatBoutonDroite()
 {
 	return ev3dev::button::right.pressed();
 }
 
-inline bool Robot::recupererEtatBoutonGauche()
+bool Robot::recupererEtatBoutonGauche()
 {
 	return ev3dev::button::left.pressed();
 }
 
-inline bool Robot::recupererEtatBoutonCentral()
+bool Robot::recupererEtatBoutonCentral()
 {
 	return ev3dev::button::enter.pressed();
 }
 
-inline bool Robot::recupererEtatBoutonRetour()
+bool Robot::recupererEtatBoutonRetour()
 {
 	return ev3dev::button::back.pressed();
 }
