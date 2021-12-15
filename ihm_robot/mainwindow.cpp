@@ -24,9 +24,14 @@ MainWindow::MainWindow(QWidget *parent)
      pMap = new QImage();
      pMap ->load ("/home/etudiant/Documents/GitHub/tp_robot_snirium/ihm_robot/images/map.png");
      ui->label_map->setPixmap(QPixmap::fromImage(*pMap));
+      
+     pLogo = new QImage();
+     pLogo -> load("/home/etudiant/Bureau/spacex-logo.png");
+     ui->label_logo->setPixmap(QPixmap::fromImage(*pLogo));
 
-    //bdd = QSqlDatabase::addDatabase("QSQLITE");
-
+     pFond = new QImage();
+     pFond -> load("/home/etudiant/Bureau/FOND-UNIVERS-2.jpg");
+     ui->label_fond->setPixmap(QPixmap::fromImage(*pFond));
 }
 
 /**
@@ -35,6 +40,7 @@ MainWindow::MainWindow(QWidget *parent)
  */
 MainWindow::~MainWindow()
 {
+    tcpSocket->write(deconnection);
     delete ui;
 
 }
@@ -62,6 +68,7 @@ void MainWindow::on_pushButton_connexion_clicked()
 void MainWindow::on_pushButton_deconnexion_clicked()
 {
     // Déconnexion du serveur
+    tcpSocket->write(deconnection);
     tcpSocket->close();
 }
 
@@ -71,7 +78,10 @@ void MainWindow::on_pushButton_deconnexion_clicked()
     /////////////////////////
     // bouton de direction //
     /////////////////////////
-
+void MainWindow::on_pushButton_stop_pressed()
+{
+    tcpSocket->write(stop);
+}
 
 
 void MainWindow::on_pushButton_avancer_pressed()
@@ -241,17 +251,6 @@ void MainWindow::placer_robot()
 
 void MainWindow::tracerRayon(float distance)
 {
-
-    //QRectF rectangle(x, y, 80.0, 60.0);
-
-    //QPainter painter(pMap);
-
-    //QPen stilot(Qt::black);
-    //painter.setPen(stilot);
-    //painter.drawEllipse(rectangle);
-
-    //ui->label_map->setPixmap(QPixmap::fromImage(*pMap));
-
     int x_robot = ui->label_robot->x() + ui->label_robot->width()/5;
     int y_robot = ui->label_robot->y() + ui->label_robot->height()/2;
     float angle_robot = angle - 90;

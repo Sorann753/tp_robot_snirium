@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1233</width>
-    <height>792</height>
+    <width>1238</width>
+    <height>781</height>
    </rect>
   </property>
   <property name="mouseTracking">
@@ -182,7 +182,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>192.168.1.156</string>
+     <string>192.168.1.158</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_5">
@@ -357,6 +357,49 @@
      <string>TextLabel</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="pushButton_stop">
+    <property name="geometry">
+     <rect>
+      <x>980</x>
+      <y>300</y>
+      <width>89</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Stop</string>
+    </property>
+    <property name="shortcut">
+     <string>Space</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_logo">
+    <property name="geometry">
+     <rect>
+      <x>510</x>
+      <y>660</y>
+      <width>661</width>
+      <height>91</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_fond">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>1231</width>
+      <height>761</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <zorder>label_fond</zorder>
    <zorder>pushButton_droite</zorder>
    <zorder>pushButton_avancer</zorder>
    <zorder>pushButton_recule</zorder>
@@ -380,13 +423,15 @@
    <zorder>label_7</zorder>
    <zorder>label_map</zorder>
    <zorder>label_robot</zorder>
+   <zorder>pushButton_stop</zorder>
+   <zorder>label_logo</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1233</width>
+     <width>1238</width>
      <height>22</height>
     </rect>
    </property>
