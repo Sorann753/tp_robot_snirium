@@ -40,7 +40,7 @@ MainWindow::MainWindow(QWidget *parent)
  */
 MainWindow::~MainWindow()
 {
-    tcpSocket->write(deconnection);
+    tcpSocket->write(encrypt(deconnection).toUtf8());
     delete ui;
 
 }
@@ -68,7 +68,7 @@ void MainWindow::on_pushButton_connexion_clicked()
 void MainWindow::on_pushButton_deconnexion_clicked()
 {
     // Déconnexion du serveur
-    tcpSocket->write(deconnection);
+    tcpSocket->write(encrypt(deconnection).toUtf8());
     tcpSocket->close();
 }
 
@@ -80,7 +80,7 @@ void MainWindow::on_pushButton_deconnexion_clicked()
     /////////////////////////
 void MainWindow::on_pushButton_stop_pressed()
 {
-    tcpSocket->write(stop);
+    tcpSocket->write(encrypt(stop).toUtf8());
 }
 
 
