@@ -59,14 +59,16 @@ public:
  	void initialiserGyroscope();
 
 	/**
-	 * Méthode pour récupérer l'angle issu du capteur gyroscopique
+	 * Méthode pour récupérer l'angle issu du capteur gyroscopique.
+	 * ! ne peut pas être récupéré en même temps que la vitesse angulaire
 	 * @param aucun
 	 * @return l'angle du robot en degree
 	 */
 	int recupererGyroscopeAngle();
 
 	/**
-	 * Méthode pour récupérer la vitesse angulaire issue du capteur gyroscopique
+	 * Méthode pour récupérer la vitesse angulaire issue du capteur gyroscopique.
+	 * ! ne peut pas être récupéré en même temps que l'angle
 	 * @param aucun
 	 * @return la vitesse angulaire du robot en degree/seconde
 	 */
