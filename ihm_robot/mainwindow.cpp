@@ -79,7 +79,7 @@ void MainWindow::on_pushButton_connexion_clicked()
      // Connexion au serveur
      tcpSocket->connectToHost(adresse_ip, port_tcp);
 
-     // Lancement du timer avec un ticstopk toutes les 1000 ms
+     // Lancement du timer avec un tick toutes les 1000 ms
      pTimer->start(1000);
 
 }
