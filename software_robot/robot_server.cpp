@@ -167,7 +167,6 @@ void robot::Server::ecouter()
 
             std::stringstream ss;
             ss << "#;" << std::to_string(data.angle) << ";"
-                       << std::to_string(data.angle_speed) << ";"
                        << std::to_string(data.angle_Mleft) << ";"
                        << std::to_string(data.angle_Mcenter) << ";"
                        << std::to_string(data.angle_Mright) << ";"

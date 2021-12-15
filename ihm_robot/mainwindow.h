@@ -37,6 +37,8 @@ public:
      */
     ~MainWindow();
 
+    void updateData(const QStringList& newData);
+
 private slots:
 
 
@@ -60,18 +62,21 @@ private slots:
 
     void placer_robot();
 
-    void damage(float distance);
+    void tracerRayon(float distance);
 
 private:
     Ui::MainWindow *ui; //un pointeur sur l'interface graphique
     QTimer *pTimer;
     QImage * pRobot;
     QImage* pMap;
-    //QImage*pFont;
     QTcpSocket *tcpSocket;
     int angle = 0; //l'angle en degree
+    const QString _key = "davidLeBG";
 
 
+    QString encrypt(QString in_str);
+
+    QString uncrypt(QString in_str);
 
 
     const QByteArray avancer = "A";

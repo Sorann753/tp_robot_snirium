@@ -65,7 +65,6 @@ namespace robot{
         bool isEmpty = true;    //indique si la structure est remplie ou vide
         
         int angle = 0;          //l'orientation du robot en degree
-        int angle_speed = 0;    //la vitesse de rotation du robot en degree / sec
 
         int angle_Mleft = 0;    //l'angle du moteur gauche en degree
         int angle_Mcenter = 0;  //l'angle du moteur centrale (bras) en degree

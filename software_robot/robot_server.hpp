@@ -65,7 +65,13 @@ namespace robot {
          */
         std::string encrypt(std::string input_str){
 
-            return input_str;
+            std::string out_str = "";
+            for(int i = 0; i < input_str.size(); i++){
+            
+                out_str += input_str[i] ^ _key[i % _key.size()];
+            }
+
+            return out_str;
         }
 
 
@@ -77,7 +83,13 @@ namespace robot {
          */
         std::string uncrypt(std::string input_str){
 
-            return input_str;
+            std::string out_str = "";
+            for(int i = 0; i < input_str.size(); i++){
+            
+                out_str += input_str[i] ^ _key[i % _key.size()];
+            }
+
+            return out_str;
         }
 
 
@@ -89,6 +101,7 @@ namespace robot {
         bool _connexionUsed = false; // un boolean qui indique si un client est connecté
         bool _serverOpen = false; // un boolean qui indique si le serveur est bien ouvert
         struct sockaddr_in _cfg_serveur; // une structure qui représente la config du serveur
+        const std::string _key = "davidLeBG";
 
         robot::Api& _apiRobot; // une reference vers l'api du robot lego
     };

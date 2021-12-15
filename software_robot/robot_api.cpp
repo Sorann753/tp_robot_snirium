@@ -54,6 +54,14 @@ void robot::Api::executeOrder(){
 
 		if(ordre == robot::Ordres::NONE){
 
+			//fait reculé le robot automatiquement si il cogne un mur
+			if(recupererEtatCapteurContact()){
+
+				goBackward();
+				attendre(500);
+				stopMoving();
+			}
+
 			attendre(500);
 			continue;
 		}
@@ -143,7 +151,6 @@ void robot::Api::readSensorData(){
 		//lecture des capteurs
 		try{
 			Data.angle 		 = recupererGyroscopeAngle();
-			Data.angle_speed = recupererGyroscopeVitesse();
 
 			recupererPositionsDesMoteurs(Data.angle_Mleft, Data.angle_Mcenter, Data.angle_Mright);
 
