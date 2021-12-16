@@ -72,37 +72,36 @@ void MainWindow::on_pushButton_deconnexion_clicked()
     tcpSocket->close();
 }
 
-
-
-
     /////////////////////////
     // bouton de direction //
     /////////////////////////
+
+    //bouton stop
 void MainWindow::on_pushButton_stop_pressed()
 {
     tcpSocket->write(encrypt(stop).toUtf8());
 }
 
-
+    //bouton flèche avancer
 void MainWindow::on_pushButton_avancer_pressed()
 {
     tcpSocket->write(encrypt(avancer).toUtf8());
     placer_robot();
 }
 
-
+    //bouton flèche gauche
 void MainWindow::on_pushButton_gauche_pressed()
 {
     tcpSocket->write(encrypt(gauche).toUtf8());
 }
 
-
+    //bouton flèche droite
 void MainWindow::on_pushButton_droite_pressed()
 {
     tcpSocket->write(encrypt(droite).toUtf8());
 }
 
-
+    //bouton flèche reculer
 void MainWindow::on_pushButton_recule_pressed()
 {
     tcpSocket->write(encrypt(reculer).toUtf8());
@@ -116,13 +115,14 @@ void MainWindow::on_pushButton_recule_pressed()
     // bouton du bras avant //
     //////////////////////////
 
-
+    //bouton pour baisser le bras
 void MainWindow::on_pushButton_descendre_pressed()
 {
     tcpSocket->write(encrypt(baisser).toUtf8());
 
 }
 
+    //bouton pour lever le bras
 void MainWindow::on_pushButton_lever_pressed()
 {
     tcpSocket->write(encrypt(lever).toUtf8());
@@ -146,6 +146,7 @@ void MainWindow::on_pushButton_lever_pressed()
     //    reception des trames     //
     /////////////////////////////////
 
+    //cryptage des trames
 QString MainWindow::encrypt(QString in_str){
 
     QString out_str = "";
@@ -158,6 +159,7 @@ QString MainWindow::encrypt(QString in_str){
     return out_str;
 }
 
+    //décryptage des trames
 QString MainWindow::uncrypt(QString in_str){
 
     QString out_str = "";
@@ -170,7 +172,9 @@ QString MainWindow::uncrypt(QString in_str){
     return out_str;
 }
 
-
+    ///////////////////////////////
+    //    rotation du robot      ////////////////////////////////////
+    ///////////////////////////////
 
 void MainWindow::updateData(const QStringList& newData){
 
@@ -190,6 +194,8 @@ void MainWindow::updateData(const QStringList& newData){
     int tauxSnirium = newData[5].toInt();
     ui->progressBar_snirium->setValue(tauxSnirium);
 
+
+    //tracage du SNIRIUM sur la carte
     if(tauxSnirium > 50){
 
         QPainter painter(pMap);
@@ -207,7 +213,9 @@ void MainWindow::updateData(const QStringList& newData){
     ui->progressBar_batterie->setValue(newData[7].toFloat());
 }
 
-
+    /////////////////////////////////
+    //    découpage des trames     //
+    /////////////////////////////////
 
 void MainWindow::gerer_donnees()
 {
@@ -247,7 +255,9 @@ void MainWindow::placer_robot()
     ui->Edit_position->setText(QString::number(ui->label_robot->x()));
 }
 
-
+    ///////////////////////////////////////////////////////
+    //    tracer ligne blanche du capteur infra-rouge    //
+    ///////////////////////////////////////////////////////
 
 void MainWindow::tracerRayon(float distance)
 {

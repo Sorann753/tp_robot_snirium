@@ -69,21 +69,21 @@ private slots:
 private:
     Ui::MainWindow *ui; //un pointeur sur l'interface graphique
     QTimer *pTimer;
-    QImage * pRobot;
+    QImage * pRobot; //pointeur sur l'image du robot
     QImage* pMap;
-    QImage* pLogo;
-    QImage* pFond;
+    QImage* pLogo; //pointer sur l'image "spaceX"
+    QImage* pFond; //pointeur sur l'image de fond
     QTcpSocket *tcpSocket;
     
     int angle = 0; //l'angle en degree
-    const QString _key = "davidLeBG";
+    const QString _key = "davidLeBG"; //mot de passe du cryptage 
 
 
     QString encrypt(QString in_str);
 
     QString uncrypt(QString in_str);
 
-
+    
     const QByteArray avancer = "A";
     const QByteArray gauche = "G";
     const QByteArray droite = "D";
