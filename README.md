@@ -1,6 +1,6 @@
 # tp_robot_snirium
 A school group project in which we have to code an exploration robot and its piloting GUI.
-Robot must be piloted in real time from a computer runing the VUI, both will comunicate in Wifi. the GUI will be made with QT
+Robot must be piloted in real time from a computer runing the GUI, both will comunicate in Wifi. the GUI will be made with QT
 
 
 
