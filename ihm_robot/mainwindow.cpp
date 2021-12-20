@@ -226,7 +226,7 @@ void MainWindow::gerer_donnees()
 
     //décodage
     QStringList trameDecoupee = trame.split(';');
-    if(trameDecoupee.size() < 8){
+    if(trameDecoupee.size() < 8){ //si la trame est trop courte on l'ignore
 
         return;
     }
@@ -243,8 +243,6 @@ void MainWindow::gerer_donnees()
     /////////////////////////////////
     //       dessin du robot       //
     /////////////////////////////////
-
-
 
 
 

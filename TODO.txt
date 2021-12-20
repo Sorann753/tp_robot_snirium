@@ -7,7 +7,6 @@ SERVER:
 IHM:
 - faire déplacement par vecteur
     -> faire calcule de vitesse
-- faire raycasting
-    -> recentré le rayons de lumière
+- améliorer raycasting
 - faire classe BDD
     -> faire BDD de stockage

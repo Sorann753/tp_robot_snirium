@@ -44,7 +44,7 @@ robot::Api::~Api(){
  * @brief fonction qui execute les ordres recu par le server
  * @param rien
  * @return rien
- * @note should be run in async
+ * @note should be run in a thread
  */
 void robot::Api::executeOrder(){
 
@@ -130,7 +130,7 @@ void robot::Api::executeOrder(){
  * @brief fonction qui lis les données des capteurs et les met dans la std::queue
  * @param rien
  * @return rien
- * @note should be run in async
+ * @note should be run in a thread
  */
 void robot::Api::readSensorData(){
 

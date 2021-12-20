@@ -118,20 +118,20 @@ namespace robot{
 
 
         /**
-         * @brief fonction qui execute les ordres recu par le server
+         * @brief methode qui execute les ordres recu par le server
          * @param rien
          * @return rien
-         * @note should be run in async
+         * @note should be run in a thread
          */
         void executeOrder();
 
 
 
         /**
-         * @brief fonction qui lis les données des capteurs et les met dans la std::queue
+         * @brief methode qui lis les données des capteurs et les met dans la std::queue
          * @param rien
          * @return rien
-         * @note should be run in async
+         * @note should be run in a thread
          */
         void readSensorData();
 
@@ -140,7 +140,7 @@ namespace robot{
 
 
         /**
-         * @brief fonction qui ajoute une valeur dans la queue Sensor
+         * @brief methode qui ajoute une valeur dans la queue Sensor
          * @param newData
          * @return rien
          */
@@ -149,7 +149,7 @@ namespace robot{
 
 
         /**
-         * @brief fonction qui lis une valeur dans la queue Sensor
+         * @brief methode qui lis une valeur dans la queue Sensor
          * @param rien
          * @return une mesure des capteur ou une mesure vide si la queue est vide
          */
@@ -158,7 +158,7 @@ namespace robot{
 
 
         /**
-         * @brief fonction qui ajoute une valeur dans la queue Exec
+         * @brief methode qui ajoute une valeur dans la queue Exec
          * @param newOrder
          * @return rien
          */
@@ -167,7 +167,7 @@ namespace robot{
 
 
         /**
-         * @brief fonction qui lis une valeur dans la queue Exec
+         * @brief methode qui lis une valeur dans la queue Exec
          * @param rien
          * @return un Ordre a executer
          */
@@ -176,9 +176,9 @@ namespace robot{
 
 
         /**
-         * @brief fonction qui lis une valeur dans la queue Exec
+         * @brief permet d'indiquer a l'Api que le server a changer d'etat
          * @param newState le nouvel état du server
-         * @return un Ordre a executer
+         * @return rien
          */
         void setServerState(char newState);
 
@@ -187,7 +187,7 @@ namespace robot{
 
 
         /**
-         * @brief fonction qui fait avancer le robot
+         * @brief methode qui fait avancer le robot
          * @param rien
          * @return rien
          */
@@ -196,7 +196,7 @@ namespace robot{
 
 
         /**
-         * @brief fonction qui fait tourné le robot sur la gauche
+         * @brief methode qui fait tourné le robot sur la gauche
          * @param rien
          * @return rien
          */
@@ -205,7 +205,7 @@ namespace robot{
 
 
         /**
-         * @brief fonction qui fait tourné le robot sur la droite
+         * @brief methode qui fait tourné le robot sur la droite
          * @param rien
          * @return rien
          */
@@ -214,7 +214,7 @@ namespace robot{
 
 
         /**
-         * @brief fonction qui fait reculer le robot
+         * @brief methode qui fait reculer le robot
          * @param rien
          * @return rien
          */
@@ -223,7 +223,7 @@ namespace robot{
 
 
         /**
-         * @brief fonction qui stope le déplacement robot
+         * @brief methode qui stope le déplacement robot
          * @param rien
          * @return rien
          */
@@ -232,7 +232,7 @@ namespace robot{
 
 
         /**
-         * @brief fonction qui fait lever le bras du robot
+         * @brief methode qui fait lever le bras du robot
          * @param rien
          * @return rien
          */
@@ -241,7 +241,7 @@ namespace robot{
         
         
         /**
-         * @brief fonction qui fait baisser le bras du robot
+         * @brief methode qui fait baisser le bras du robot
          * @param rien
          * @return rien
          */
@@ -250,7 +250,7 @@ namespace robot{
 
 
         /**
-         * @brief fonction qui renvoie l'etat du bouton retour
+         * @brief methode qui renvoie l'etat du bouton retour
          * @param rien
          * @return true si le bouton est pressé, false si non
          */

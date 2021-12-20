@@ -52,7 +52,7 @@ namespace robot {
          * @brief methode qui écoute les transmission qui arrivent sur le serveur
          * @param rien
          * @return rien
-         * @note should be run in async
+         * @note should be run in a thread
          */
         void ecouter();
 
@@ -63,16 +63,7 @@ namespace robot {
          * @param input_str le string a crypter
          * @return le string qui une fois crypte
          */
-        std::string encrypt(std::string input_str){
-
-            std::string out_str = "";
-            for(int i = 0; i < input_str.size(); i++){
-            
-                out_str += input_str[i] ^ _key[i % _key.size()];
-            }
-
-            return out_str;
-        }
+        std::string encrypt(std::string input_str);
 
 
 
@@ -81,16 +72,7 @@ namespace robot {
          * @param input_str le string a decrypter
          * @return le string une fois decrypte
          */
-        std::string uncrypt(std::string input_str){
-
-            std::string out_str = "";
-            for(int i = 0; i < input_str.size(); i++){
-            
-                out_str += input_str[i] ^ _key[i % _key.size()];
-            }
-
-            return out_str;
-        }
+        std::string uncrypt(std::string input_str);
 
 
 
@@ -101,7 +83,7 @@ namespace robot {
         bool _connexionUsed = false; // un boolean qui indique si un client est connecté
         bool _serverOpen = false; // un boolean qui indique si le serveur est bien ouvert
         struct sockaddr_in _cfg_serveur; // une structure qui représente la config du serveur
-        const std::string _key = "davidLeBG";
+        const std::string _key = "davidLeBG"; // la clef de cryptage des transmissions
 
         robot::Api& _apiRobot; // une reference vers l'api du robot lego
     };

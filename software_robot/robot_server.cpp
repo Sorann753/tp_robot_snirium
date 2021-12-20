@@ -73,7 +73,7 @@ robot::Server::~Server(){
  * @brief methode qui écoute les transmission qui arrivent sur le serveur
  * @param rien
  * @return rien
- * @note should be run in async
+ * @note should be run in a thread
  */
 void robot::Server::ecouter()
 {
@@ -165,6 +165,7 @@ void robot::Server::ecouter()
 
             if(data.isEmpty){ continue; }
 
+            //formatage des données
             std::stringstream ss;
             ss << "#;" << std::to_string(data.angle) << ";"
                        << std::to_string(data.angle_Mleft) << ";"
@@ -207,4 +208,40 @@ void robot::Server::ecouter()
 
         compteur++;
     }
+}
+
+
+
+/**
+ * @brief methode qui permet de crypter une trame
+ * @param input_str le string a crypter
+ * @return le string qui une fois crypte
+ */
+std::string robot::Server::encrypt(std::string input_str){
+
+    std::string out_str = "";
+    for(int i = 0; i < input_str.size(); i++){
+    
+        out_str += input_str[i] ^ _key[i % _key.size()];
+    }
+
+    return out_str;
+}
+
+
+
+/**
+ * @brief methode qui permet de decrypter une trame
+ * @param input_str le string a decrypter
+ * @return le string une fois decrypte
+ */
+std::string robot::Server::uncrypt(std::string input_str){
+
+    std::string out_str = "";
+    for(int i = 0; i < input_str.size(); i++){
+    
+        out_str += input_str[i] ^ _key[i % _key.size()];
+    }
+
+    return out_str;
 }
