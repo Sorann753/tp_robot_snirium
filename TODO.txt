@@ -1,8 +1,6 @@
 SERVER:
 - faire fonctions initialisation chiffrage (XOR => RSA?)
-- faire fonctions chiffrage (XOR => AES?)
-- tester return struct vide (seems OK)
-- faire bip de marche arrière
+- amélioré fonctions chiffrage (XOR => AES?)
 
 IHM:
 - faire déplacement par vecteur
